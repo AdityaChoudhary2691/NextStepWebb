@@ -5,6 +5,7 @@ import Nav from './Components/Nav'
 import JobCard from './Components/JobCard'
 import PostJob from './Components/PostJob';
 import ApplicationForm from './Components/ApplicationForm';
+import CandidateCard from './Components/CandidateCard';
 
 const App = () => {
   const location = useLocation();
@@ -24,6 +25,7 @@ const App = () => {
         }></Route>
       <Route path='/postjobs' element={<PostJob/>}></Route>
       <Route path='/postskills' element={<ApplicationForm></ApplicationForm>}></Route>
+      <Route path='/findskills' element={<CandidateCard/>}></Route>
    </Routes>
    </>
    

@@ -339,7 +339,7 @@ export default function ApplicationForm() {
               )}
 
               {skills.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2 p-3 rounded-lg bg-gray-50 border border-gray-100 min-h-[52px]">
+                <div className="mt-3 flex flex-wrap gap-2 p-3 rounded-lg bg-gray-50 border border-gray-100 min-h-13">
                   {skills.map((s) => (
                     <span
                       key={s}
@@ -363,45 +363,26 @@ export default function ApplicationForm() {
             <Divider />
 
             {/* Uploads */}
-            <section className="grid sm:grid-cols-2 gap-5">
-              <UploadBox
-                label="Resume (PDF)"
-                required
-                error={errors.resume}
-                icon={<FileText size={18} />}
-                file={resume}
-                onClick={() => resumeInputRef.current?.click()}
-                onRemove={() => setResume(null)}
-                accept="application/pdf"
-                hint="PDF up to 10MB"
-                formatSize={formatSize}
-              />
+            <section className="grid m-5 ">
+              <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
+                Skills <span style={{ color: ACCENT }}>*</span>
+              </label>
+              <div className="flex gap-2"></div>
               <input
-                ref={resumeInputRef}
-                type="file"
-                accept="application/pdf"
-                onChange={handleResumeChange}
-                className="hidden"
-              />
+                  type="text"
+                  placeholder="Resume"
+                  className="flex-1"
+                />
 
-              <UploadBox
-                label="Video introduction"
-                icon={<Video size={18} />}
-                file={video}
-                onClick={() => videoInputRef.current?.click()}
-                onRemove={() => setVideo(null)}
-                accept="video/*"
-                hint="MP4, up to 2 minutes"
-                error={errors.video}
-                formatSize={formatSize}
-              />
+              <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
+                Vedio Intro <span style={{ color: ACCENT }}>*</span>
+              </label>
+              <div className="flex gap-2"></div>
               <input
-                ref={videoInputRef}
-                type="file"
-                accept="video/*"
-                onChange={handleVideoChange}
-                className="hidden"
-              />
+                  type="text"
+                  placeholder="Vedio Intro"
+                  className="flex-1"
+                />
             </section>
           </div>
 
@@ -420,7 +401,7 @@ export default function ApplicationForm() {
         </form>
 
         {/* LIVE PREVIEW CARD */}
-        <div className="lg:sticky lg:top-6">
+        <div className="lg:sticky lg:top-25">
           <p className="text-xs font-semibold tracking-widest uppercase text-gray-400 mb-2 px-1">
             Live preview
           </p>

@@ -62,6 +62,23 @@ export default function PostJob() {
             </div>
             
           </div>
+          <div>
+            <label htmlFor="position" className="block text-sm font-medium text-[#1c1c1a] mb-2">
+              Renumeration
+            </label>
+            <div className="relative">
+              <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1c1c1a]/35" />
+              <input
+                id="position"
+                name="position"
+                type="text"
+                
+                placeholder="e.g. 5 LPA"
+                className={`w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10 `}
+              />
+            </div>
+            
+          </div>
 
           {/* Company Name */}
           <div>

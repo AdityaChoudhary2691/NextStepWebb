@@ -7,7 +7,7 @@ const Nav = () => {
   const location = useLocation();
   return (
     <>
-    <div className=' h-18 bg-black text-white flex justify-between align-middle'>
+    <div className=' h-18 bg-black text-white flex justify-between align-middle sticky top-0 z-50'>
       <li><Link to="/"><img src={logo} alt="" className='w-22 h-14 rounded m-2'/></Link></li>
       <ul className='flex gap-7 p-2 pt-4'>
 
@@ -48,9 +48,9 @@ const Nav = () => {
    
       <li>
       <Link
-        to=""
+        to="/findskills"
         className={`inline-block relative transform transition-transform duration-300 hover:scale-105 
-          ${location.pathname === "" ? "text-blue-600 after:w-full" : "text-white hover:text-blue-600"}
+          ${location.pathname === "/findskills" ? "text-blue-600 after:w-full" : "text-white hover:text-blue-600"}
           after:content-[''] after:block after:w-0 after:h-[2px] after:bg-blue-600 
           after:transition-all after:duration-300 hover:after:w-full font-foda text-xl`}
       >
