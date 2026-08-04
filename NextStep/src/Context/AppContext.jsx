@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext , useState , useRef} from "react";
 
 export const AppContext = createContext();
 const Jobs = [
@@ -74,9 +74,28 @@ const colors = [
 ];
 
 
+
+
 export const AppProvider = ({ children }) => {
+  const [form, setForm] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+    status: "",
+    passoutYear: "",
+    applyingFor: "",
+  });
+  const [skillInput, setSkillInput] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [resume, setResume] = useState(null);
+  const [video, setVideo] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const resumeInputRef = useRef(null);
+  const videoInputRef = useRef(null);
   return (
-    <AppContext.Provider value={{ Jobs , colors }}>
+    <AppContext.Provider value={{ Jobs , colors ,form,setForm,skillInput,skills,resumeInputRef,videoInputRef,setSkillInput,resume,setResume,video,setVideo,errors,setErrors,submitted,setSubmitted}}>
       {children}
     </AppContext.Provider>
   );
