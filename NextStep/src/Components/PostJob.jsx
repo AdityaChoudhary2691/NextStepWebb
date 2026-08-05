@@ -1,7 +1,43 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Briefcase, GraduationCap, Building2, FileText, Send, CheckCircle2 } from "lucide-react";
+import { AppContext } from "../Context/AppContext";
 
 export default function PostJob() {
+  const {job,setJob,position,setPosition,name,setName,renumeration,setRenumeration,desc,setDesc}=useContext(AppContext);
+  
+
+const [jobType, setJobType] = useState("");
+
+const handleClick = (event) => {
+  setJobType(event.target.value);
+};
+
+const handlePosition = (event) => setPosition(event.target.value);
+const handleName = (event) => setName(event.target.value);
+const handleRenumeration = (event) => setRenumeration(event.target.value);
+const handleDesc = (event) => setDesc(event.target.value);
+
+const onSubmit = (e) => {
+  e.preventDefault();
+
+  const newJobs = {
+    type: jobType,
+    position,
+    company: name,
+    renumeration,
+    desc,
+  };
+
+  setJob([...job, newJobs]);
+
+  // reset inputs
+  setJobType("");
+  setPosition("");
+  setName("");
+  setRenumeration("");
+  setDesc("");
+};
+
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#f0efe8] p-6">
@@ -29,6 +65,8 @@ export default function PostJob() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
+                value="Full-Time"
+                onClick={handleClick}
                 className={`flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition-all duration-200 `}
               >
                 <Briefcase className="w-4 h-4" />
@@ -36,6 +74,8 @@ export default function PostJob() {
               </button>
               <button
                 type="button"
+                value="Internship"
+                onClick={handleClick}
                 className={`flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition-all duration-200 `}
               >
                 <GraduationCap className="w-4 h-4" />
@@ -55,7 +95,8 @@ export default function PostJob() {
                 id="position"
                 name="position"
                 type="text"
-                
+                value={position}
+                onChange={handlePosition}
                 placeholder="e.g. Frontend Developer"
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10 `}
               />
@@ -69,10 +110,11 @@ export default function PostJob() {
             <div className="relative">
               <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1c1c1a]/35" />
               <input
-                id="position"
-                name="position"
+                id="renumeration"
+                name="renumeration"
                 type="text"
-                
+                value={renumeration}
+                onChange={handleRenumeration}
                 placeholder="e.g. 5 LPA"
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10 `}
               />
@@ -91,7 +133,8 @@ export default function PostJob() {
                 id="companyName"
                 name="companyName"
                 type="text"
-                
+                value={name}
+                onChange={handleName}
         
                 placeholder="e.g. Nexep Technologies"
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10 `}
@@ -110,7 +153,8 @@ export default function PostJob() {
                 id="description"
                 name="description"
                 rows={5}
-                
+                value={desc}
+                onChange={handleDesc}
                
                 placeholder="Describe responsibilities, requirements, and what makes this opportunity a good fit..."
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none resize-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10 `}
@@ -122,6 +166,7 @@ export default function PostJob() {
           <button
             type="submit"
             className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#1c1c1a] text-[#f0efe8] font-medium py-3.5 text-sm transition-all duration-200 hover:bg-[#1c1c1a]/90 active:scale-[0.98] disabled:opacity-70 cursor-pointer"
+            onClick={onSubmit}
           >
             Submit
           </button>

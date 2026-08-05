@@ -1,33 +1,37 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AppContext } from '../Context/AppContext';
 
 
 const JobCard = () => {
+  const {job} = useContext(AppContext)
   
   return (
-    <div className="max-w-md rounded-xl border border-gray-200 bg-white p-6 m-6 shadow-sm">
+    <>
+    { job.map((item,key)=>(
+      <div className="max-w-md rounded-xl border border-gray-200 bg-white p-6 m-6 shadow-sm">
       {/* Badge */}
       <div className="mb-4 inline-block">
         <span className="rounded-full border border-amber-300 bg-amber-50/50 px-3.5 py-1 text-sm font-medium text-amber-800">
-          Internship
+          {item.type}
         </span>
       </div>
 
       {/* Title & Company */}
       <h2 className="text-xl font-bold text-slate-900">
-        Backend Developer Intern
+        {item.position}
       </h2>
       <p className="mt-1 text-base text-slate-600">
-        Launchbay Technologies
+        {item.company}
       </p>
 
       {/* Salary */}
       <p className="mt-3 text-lg font-bold text-emerald-700">
-        ₹15,000/month
+        {item.renumeration}
       </p>
 
       {/* Description */}
       <p className="mt-4 text-sm leading-relaxed text-slate-600">
-        Work with our engineering team on Spring Boot microservices, help design REST APIs, and get hands-on experience with MongoDB and JWT-based auth.
+        {item.desc}
       </p>
 
       {/* Divider */}
@@ -43,7 +47,11 @@ const JobCard = () => {
         </button>
       </div>
     </div>
+    ))}
+    </>
+    
+    
   );
-};
+}
 
 export default JobCard;

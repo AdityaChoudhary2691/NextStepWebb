@@ -23,9 +23,26 @@ export default function ApplicationForm() {
 
   const years = Array.from({ length: 7 }, (_, i) => 2024 + i);
 
-  function update(field, value) {
-    setForm((f) => ({ ...f, [field]: value }));
-    setErrors((e) => ({ ...e, [field]: undefined }));
+  const [uname, setUName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("");
+  const [apply, setApply] = useState("");
+
+  const handleUsername=(e)=>{
+    setUName(e.target.value);
+  }
+  const handleMobile=(e)=>{
+    setMobile(e.target.value);
+  }
+  const handleEmail=(e)=>{
+    setEmail(e.target.value);
+  }
+  const handleStatus=(e)=>{
+    setStatus(e.target.value);
+  }
+  const handleApply=(e)=>{
+    setApply(e.target.value);
   }
 
   function addSkill() {
@@ -50,27 +67,8 @@ export default function ApplicationForm() {
     }
   }
 
-  function handleResumeChange(e) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.type !== "application/pdf") {
-      setErrors((er) => ({ ...er, resume: "Only PDF files are accepted." }));
-      return;
-    }
-    setResume(file);
-    setErrors((er) => ({ ...er, resume: undefined }));
-  }
-
-  function handleVideoChange(e) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith("video/")) {
-      setErrors((er) => ({ ...er, video: "Only video files are accepted." }));
-      return;
-    }
-    setVideo(file);
-    setErrors((er) => ({ ...er, video: undefined }));
-  }
+  
+  
 
   function validate() {
     const e = {};
@@ -84,7 +82,6 @@ export default function ApplicationForm() {
       e.passoutYear = "Select your expected passout year.";
     if (!form.applyingFor) e.applyingFor = "Select what you're applying for.";
     if (skills.length === 0) e.skills = "Add at least one skill.";
-    if (!resume) e.resume = "Upload your resume as a PDF.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -95,20 +92,7 @@ export default function ApplicationForm() {
     setSubmitted(true);
   }
 
-  function formatSize(bytes) {
-    if (!bytes) return "";
-    const kb = bytes / 1024;
-    if (kb < 1024) return `${kb.toFixed(0)} KB`;
-    return `${(kb / 1024).toFixed(1)} MB`;
-  }
-
-  const initials = form.name
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase())
-    .join("");
+ 
 
   if (submitted) {
     return (
@@ -419,7 +403,7 @@ export default function ApplicationForm() {
                 className="absolute -bottom-8 left-6 w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold text-white border-4 border-white"
                 style={{ backgroundColor: ACCENT }}
               >
-                {initials || <User size={22} />}
+                
               </div>
             </div>
             <div className="pt-11 pb-5 px-6">
