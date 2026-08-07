@@ -105,18 +105,10 @@ const candidates = [
      
   },
 ];
+const years = Array.from({ length: 7 }, (_, i) => 2024 + i);
 
 
 export const AppProvider = ({ children }) => {
-  const [form, setForm] = useState({
-    name: "",
-    mobile: "",
-    email: "",
-    status: "",
-    passoutYear: "",
-    applyingFor: "",
-  });
-  const [skillInput, setSkillInput] = useState("");
   const [job, setJob] = useState([{
     type: "Internship",
     position: "Backend Developer Intern",
@@ -124,20 +116,27 @@ export const AppProvider = ({ children }) => {
     renumeration: "₹15,000/month",
     desc: "Work with our engineering team on Spring Boot microservices..."
   }]);
-  const [skills, setSkills] = useState([]);
-  const [resume, setResume] = useState(null);
-  const [video, setVideo] = useState(null);
-  const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+ 
   const[position,setPosition]=useState("");
   const[name,setName]=useState("");
   const[renumeration,setRenumeration]=useState("");
   const[desc,setDesc]=useState("");
+  const [candidates, setCandidates] = useState([]);
+ const [skill, setSkills] = useState([]);
+ const [uname, setUName] = useState("");
+ const [mobile, setMobile] = useState("");
+ const [email, setEmail] = useState("");
+ const [status, setStatus] = useState("");
+ const [resume, setResume] = useState("")
+ const [vedio, setVedio] = useState("")
+ const [apply,setApply]=useState("");
+  
+  const [passoutYear, setPassoutYear] = useState("");
 
-  const resumeInputRef = useRef(null);
-  const videoInputRef = useRef(null);
+
+ 
   return (
-    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,renumeration,setRenumeration,desc,setDesc, colors ,form,setForm,skillInput,skills,resumeInputRef,videoInputRef,setSkillInput,resume,setResume,video,setVideo,errors,setErrors,submitted,setSubmitted,candidates}}>
+    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,renumeration,setRenumeration,desc,setDesc, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates}}>
       {children}
     </AppContext.Provider>
   );

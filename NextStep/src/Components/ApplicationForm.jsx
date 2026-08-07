@@ -19,15 +19,28 @@ const INK ="#000000";
 
 export default function ApplicationForm() {
   
- const{form,setForm,skillInput,skills,resumeInputRef,videoInputRef,setSkillInput,resume,setResume,video,setVideo,errors,setErrors,submitted,setSubmitted} = useContext(AppContext)
+ const{years,skill,setSkills,uname,setUName,mobile,setMobile,email,setEmail,status,setStatus,resume,setResume,vedio,setVedio,apply,setApply,passoutYear,setPassoutYear,candidates,setCandidates} = useContext(AppContext)
 
-  const years = Array.from({ length: 7 }, (_, i) => 2024 + i);
+  
 
-  const [uname, setUName] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("");
-  const [apply, setApply] = useState("");
+ 
+
+ 
+ 
+ const removeSkill=(item)=>{
+   setSkills(skill.filter((i)=>i!==item));
+  }
+  
+  const handleButton=(e)=>{
+   if(e.key==="Enter"){
+     e.preventDefault();
+     handleSkills(e);
+   }
+  }
+ const handleSkills=(e)=>{
+      const newskills=[...skill,e.target.value];
+      setSkills(newskills);
+ }
 
   const handleUsername=(e)=>{
     setUName(e.target.value);
@@ -38,112 +51,57 @@ export default function ApplicationForm() {
   const handleEmail=(e)=>{
     setEmail(e.target.value);
   }
-  const handleStatus=(e)=>{
-    setStatus(e.target.value);
+  const updateStatus=(e)=>{
+    setApply(e);
   }
   const handleApply=(e)=>{
     setApply(e.target.value);
   }
 
-  function addSkill() {
-    const val = skillInput.trim();
-    if (!val) return;
-    if (skills.some((s) => s.toLowerCase() === val.toLowerCase())) {
-      setSkillInput("");
-      return;
-    }
-    setSkills((s) => [...s, val]);
-    setSkillInput("");
+  const update=(e)=>{
+    setStatus(e);
   }
 
-  function removeSkill(skill) {
-    setSkills((s) => s.filter((x) => x !== skill));
+  const handleResume=(e)=>{
+    setResume(e.target.value);
   }
-
-  function handleSkillKeyDown(e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addSkill();
-    }
+  const handleVedio=(e)=>{
+    setVedio(e.target.value);
   }
+ 
 
-  
-  
-
-  function validate() {
-    const e = {};
-    if (!form.name.trim()) e.name = "Enter your full name.";
-    if (!/^\d{10}$/.test(form.mobile.trim()))
-      e.mobile = "Enter a valid 10-digit mobile number.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()))
-      e.email = "Enter a valid email address.";
-    if (!form.status) e.status = "Select your current status.";
-    if (form.status === "studying" && !form.passoutYear)
-      e.passoutYear = "Select your expected passout year.";
-    if (!form.applyingFor) e.applyingFor = "Select what you're applying for.";
-    if (skills.length === 0) e.skills = "Add at least one skill.";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!validate()) return;
-    setSubmitted(true);
+    const newCandidate=[...candidates,{
+      username:uname,
+      mobileno : mobile,
+      uemail: email,
+      ustatus : status,
+      applyingf : apply,
+      upassoutYear: passoutYear,
+      uskills:skill,
+      uresume:resume,
+      uvedio:vedio
+    }]
+    setCandidates(newCandidate);
+
+    setApply("");
+    setUName("");
+    setSkills([]);
+    setMobile("");
+    setPassoutYear("");
+    setResume("");
+    setVedio("");
+    setEmail("");
+    setStatus("");
   }
-
- 
-
-  if (submitted) {
-    return (
-      <div style={{ fontFamily: "'Inter', system-ui, sans-serif" }} className="min-h-screen flex items-center justify-center p-6" >
-        <div className="max-w-md w-full text-center bg-white rounded-2xl shadow-xl p-10 border border-gray-100">
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
-            style={{ backgroundColor: ACCENT }}
-          >
-            <Check size={30} color="white" strokeWidth={3} />
-          </div>
-          <h2 className="text-2xl font-bold mb-2" style={{ color: INK }}>
-            Application submitted
-          </h2>
-          <p className="text-gray-500 mb-6">
-            Thanks, {form.name.split(" ")[0]}. We've received your details for
-            the {form.applyingFor} track. Our team will reach out on{" "}
-            {form.email}.
-          </p>
-          <button
-            onClick={() => {
-              setSubmitted(false);
-              setForm({
-                name: "",
-                mobile: "",
-                email: "",
-                status: "",
-                passoutYear: "",
-                applyingFor: "",
-              });
-              setSkills([]);
-              setResume(null);
-              setVideo(null);
-            }}
-            className="px-6 py-2.5 rounded-lg font-semibold text-white transition-transform hover:scale-[1.02]"
-            style={{ backgroundColor: INK }}
-          >
-            Submit another response
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       style={{ fontFamily: "'Inter', system-ui, sans-serif", backgroundColor: "#F7F8FB" }}
       className="min-h-screen py-10 px-4"
     >
       <div className="max-w-5xl mx-auto grid lg:grid-cols-[1fr_320px] gap-6 items-start">
-        {/* FORM */}
         <form
           onSubmit={handleSubmit}
           className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
@@ -175,48 +133,45 @@ export default function ApplicationForm() {
               <Field
                 label="Full name"
                 required
-                error={errors.name}
                 icon={<User size={16} />}
               >
                 <input
                   type="text"
-                  value={form.name}
-                  onChange={(e) => update("name", e.target.value)}
+                  value={uname}
+                 onChange={handleUsername}
                   placeholder="Aditya Sharma"
-                  className={inputClass(errors.name)}
+                  
                 />
               </Field>
 
               <Field
                 label="Mobile number"
                 required
-                error={errors.mobile}
+                
                 icon={<Phone size={16} />}
               >
                 <input
                   type="tel"
-                  value={form.mobile}
-                  onChange={(e) =>
-                    update("mobile", e.target.value.replace(/[^\d]/g, "").slice(0, 10))
-                  }
+                  value={mobile}
+                 onChange={handleMobile}
                   placeholder="9876543210"
-                  className={inputClass(errors.mobile)}
+                  
                 />
               </Field>
 
               <Field
                 label="Email address"
                 required
-                error={errors.email}
+               
                 icon={<Mail size={16} />}
                 full
               >
                 <input
                   type="email"
-                  value={form.email}
-                  onChange={(e) => update("email", e.target.value)}
+                  onChange={handleEmail}
+                  value={email}
                   placeholder="you@example.com"
-                  className={inputClass(errors.email)}
+                 
                 />
               </Field>
             </section>
@@ -228,13 +183,12 @@ export default function ApplicationForm() {
               <Field
                 label="Current status"
                 required
-                error={errors.status}
                 icon={<GraduationCap size={16} />}
               >
                 <select
-                  value={form.status}
-                  onChange={(e) => update("status", e.target.value)}
-                  className={inputClass(errors.status)}
+                value={status}
+                  onChange={(e)=>update(e.target.value)}
+                  
                 >
                   <option value="">Select status</option>
                   <option value="studying">Currently studying in college</option>
@@ -242,16 +196,15 @@ export default function ApplicationForm() {
                 </select>
               </Field>
 
-              {form.status === "studying" && (
+              {status === "studying" && (
                 <Field
                   label="Expected year of passout"
                   required
-                  error={errors.passoutYear}
                 >
                   <select
-                    value={form.passoutYear}
-                    onChange={(e) => update("passoutYear", e.target.value)}
-                    className={inputClass(errors.passoutYear)}
+                    value={passoutYear}
+                    onChange={(e)=>setPassoutYear(e.target.value)}
+                    
                   >
                     <option value="">Select year</option>
                     {years.map((y) => (
@@ -266,19 +219,17 @@ export default function ApplicationForm() {
               <Field
                 label="Applying for"
                 required
-                error={errors.applyingFor}
                 icon={<Briefcase size={16} />}
-                full={form.status !== "studying"}
               >
                 <div className="flex gap-3">
                   {["Internship", "Job"].map((opt) => (
                     <button
                       type="button"
                       key={opt}
-                      onClick={() => update("applyingFor", opt)}
+                      onClick={() => updateStatus(opt)}
                       className="flex-1 py-2.5 rounded-lg border-2 text-sm font-semibold transition-colors"
                       style={
-                        form.applyingFor === opt
+                        apply === opt
                           ? { borderColor: ACCENT, backgroundColor: "#FEF6EA", color: INK }
                           : { borderColor: "#E5E7EB", color: "#6B7280" }
                       }
@@ -287,9 +238,7 @@ export default function ApplicationForm() {
                     </button>
                   ))}
                 </div>
-                {errors.applyingFor && (
-                  <p className="text-red-500 text-xs mt-1.5">{errors.applyingFor}</p>
-                )}
+                
               </Field>
             </section>
 
@@ -303,28 +252,24 @@ export default function ApplicationForm() {
               <div className="flex gap-2">
                 <input
                   type="text"
-                  value={skillInput}
-                  onChange={(e) => setSkillInput(e.target.value)}
-                  onKeyDown={handleSkillKeyDown}
+                  onKeyDown={handleButton}
+                  
                   placeholder="e.g. React, Java, SQL"
-                  className={inputClass(errors.skills) + " flex-1"}
+                  className= " flex-1"
                 />
                 <button
                   type="button"
-                  onClick={addSkill}
                   className="px-4 rounded-lg font-semibold text-white flex items-center gap-1.5 shrink-0"
                   style={{ backgroundColor: INK }}
                 >
                   <Plus size={16} /> Add
                 </button>
               </div>
-              {errors.skills && (
-                <p className="text-red-500 text-xs mt-1.5">{errors.skills}</p>
-              )}
+              
 
-              {skills.length > 0 && (
+              {skill.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2 p-3 rounded-lg bg-gray-50 border border-gray-100 min-h-13">
-                  {skills.map((s) => (
+                  {skill.map((s) => (
                     <span
                       key={s}
                       className="inline-flex items-center gap-1.5 pl-3 pr-2 py-1.5 rounded-full text-sm font-medium"
@@ -349,13 +294,15 @@ export default function ApplicationForm() {
             {/* Uploads */}
             <section className="grid m-5 ">
               <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
-                Skills <span style={{ color: ACCENT }}>*</span>
+                Resume <span style={{ color: ACCENT }}>*</span>
               </label>
               <div className="flex gap-2"></div>
               <input
                   type="text"
+                  value={resume}
                   placeholder="Resume"
                   className="flex-1"
+                  onChange={handleResume}
                 />
 
               <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
@@ -366,6 +313,8 @@ export default function ApplicationForm() {
                   type="text"
                   placeholder="Vedio Intro"
                   className="flex-1"
+                  value={vedio}
+                  onChange={handleVedio}
                 />
             </section>
           </div>
@@ -408,32 +357,26 @@ export default function ApplicationForm() {
             </div>
             <div className="pt-11 pb-5 px-6">
               <h3 className="font-bold text-lg" style={{ color: INK }}>
-                {form.name || "Your name"}
+                  
               </h3>
               <p className="text-sm text-gray-400 mb-4">
-                {form.email || "your.email@example.com"}
+                
               </p>
 
               <div className="space-y-2.5 text-sm">
                 <PreviewRow
                   label="Status"
-                  value={
-                    form.status === "studying"
-                      ? `Studying · Class of ${form.passoutYear || "—"}`
-                      : form.status === "passout"
-                      ? "Passed out"
-                      : "—"
-                  }
+                 
                 />
-                <PreviewRow label="Applying for" value={form.applyingFor || "—"} />
-                <PreviewRow label="Mobile" value={form.mobile || "—"} />
+                <PreviewRow label="Applying for"  />
+                <PreviewRow label="Mobile" />
               </div>
 
-              {skills.length > 0 && (
+              {/* {skill.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-gray-100">
                   <p className="text-xs font-semibold text-gray-400 mb-2">SKILLS</p>
                   <div className="flex flex-wrap gap-1.5">
-                    {skills.map((s) => (
+                    {skill.map((s) => (
                       <span
                         key={s}
                         className="text-xs px-2 py-1 rounded-md font-medium"
@@ -444,20 +387,20 @@ export default function ApplicationForm() {
                     ))}
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className="mt-4 pt-4 border-t border-gray-100 flex gap-4 text-xs">
                 <span
                   className="flex items-center gap-1"
-                  style={{ color: resume ? "#3A7D5C" : "#B0B5BF" }}
+                  // style={{ color: resume ? "#3A7D5C" : "#B0B5BF" }}
                 >
-                  <FileText size={13} /> Resume {resume ? "attached" : "missing"}
+                  {/* <FileText size={13} /> Resume {resume ? "attached" : "missing"} */}
                 </span>
                 <span
                   className="flex items-center gap-1"
-                  style={{ color: video ? "#3A7D5C" : "#B0B5BF" }}
+                  // style={{ color: video ? "#3A7D5C" : "#B0B5BF" }}
                 >
-                  <Video size={13} /> Video {video ? "attached" : "optional"}
+                  
                 </span>
               </div>
             </div>
