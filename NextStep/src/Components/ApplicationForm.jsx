@@ -18,6 +18,8 @@ const ACCENT = "#E8A33D";
 const INK ="#000000";
 
 export default function ApplicationForm() {
+
+  const [inputValue, setInputValue] = useState("");
   
  const{years,skill,setSkills,uname,setUName,mobile,setMobile,email,setEmail,status,setStatus,resume,setResume,vedio,setVedio,apply,setApply,passoutYear,setPassoutYear,candidates,setCandidates} = useContext(AppContext)
 
@@ -34,12 +36,15 @@ export default function ApplicationForm() {
   const handleButton=(e)=>{
    if(e.key==="Enter"){
      e.preventDefault();
-     handleSkills(e);
+     handleSkills();
+     
    }
   }
- const handleSkills=(e)=>{
-      const newskills=[...skill,e.target.value];
-      setSkills(newskills);
+ const handleSkills=()=>{
+      if (inputValue.trim() === "") return; // prevent empty values
+    const newSkills = [...skill, inputValue.trim()];
+      setSkills(newSkills);
+      setInputValue("");
  }
 
   const handleUsername=(e)=>{
@@ -252,13 +257,15 @@ export default function ApplicationForm() {
               <div className="flex gap-2">
                 <input
                   type="text"
-                  onKeyDown={handleButton}
-                  
+                  value={inputValue}
+                 onChange={(e) => setInputValue(e.target.value)}
+                 onKeyDown={handleButton}
                   placeholder="e.g. React, Java, SQL"
                   className= " flex-1"
                 />
                 <button
                   type="button"
+                  onClick={handleSkills}
                   className="px-4 rounded-lg font-semibold text-white flex items-center gap-1.5 shrink-0"
                   style={{ backgroundColor: INK }}
                 >
@@ -352,7 +359,7 @@ export default function ApplicationForm() {
                 className="absolute -bottom-8 left-6 w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold text-white border-4 border-white"
                 style={{ backgroundColor: ACCENT }}
               >
-                
+                {uname[0]}
               </div>
             </div>
             <div className="pt-11 pb-5 px-6">
@@ -360,19 +367,20 @@ export default function ApplicationForm() {
                   
               </h3>
               <p className="text-sm text-gray-400 mb-4">
-                
+                {uname}
               </p>
 
-              <div className="space-y-2.5 text-sm">
+              <div className="space-y-2.5 text-sm ">
                 <PreviewRow
                   label="Status"
                  
                 />
-                <PreviewRow label="Applying for"  />
-                <PreviewRow label="Mobile" />
+                {status}
+                <PreviewRow label="Applying for"  /><h2></h2> 
+                <PreviewRow label="Mobile" />{mobile}
               </div>
 
-              {/* {skill.length > 0 && (
+               {skill.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-gray-100">
                   <p className="text-xs font-semibold text-gray-400 mb-2">SKILLS</p>
                   <div className="flex flex-wrap gap-1.5">
@@ -387,7 +395,8 @@ export default function ApplicationForm() {
                     ))}
                   </div>
                 </div>
-              )} */}
+              )} 
+
 
               <div className="mt-4 pt-4 border-t border-gray-100 flex gap-4 text-xs">
                 <span

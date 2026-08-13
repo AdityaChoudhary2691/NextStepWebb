@@ -40,7 +40,7 @@ const onSubmit = (e) => {
 
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#f0efe8] p-6">
+    <div className="min-h-screen w-full flex items-center justify-center  p-6">
       <div className="w-full max-w-xl">
         <div className="mb-8 text-center">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#1c1c1a] mb-4">
@@ -63,25 +63,33 @@ const onSubmit = (e) => {
               Type
             </label>
             <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                value="Full-Time"
-                onClick={handleClick}
-                className={`flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition-all duration-200 `}
-              >
-                <Briefcase className="w-4 h-4" />
-                Full-time Job
-              </button>
-              <button
-                type="button"
-                value="Internship"
-                onClick={handleClick}
-                className={`flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition-all duration-200 `}
-              >
-                <GraduationCap className="w-4 h-4" />
-                Internship
-              </button>
-            </div>
+  <button
+    type="button"
+    value="Full-Time"
+    onClick={handleClick}
+    className={`flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition-all duration-200 ${
+      jobType === "Full-Time"
+        ? "border-black bg-black text-white"
+        : "border-gray-300 bg-white text-gray-700 hover:border-gray-400"
+    }`}
+  >
+    <Briefcase className="w-4 h-4" />
+    Full-time Job
+  </button>
+  <button
+    type="button"
+    value="Internship"
+    onClick={handleClick}
+    className={`flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition-all duration-200 ${
+      jobType === "Internship"
+        ? "border-black bg-black text-white"
+        : "border-gray-300 bg-white text-gray-700 hover:border-gray-400"
+    }`}
+  >
+    <GraduationCap className="w-4 h-4" />
+    Internship
+  </button>
+</div>
           </div>
 
           {/* Position */}

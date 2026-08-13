@@ -61,7 +61,7 @@ const Nav = () => {
 
       </ul> 
 
-     <a
+     <Link to="/login"
   href="#"
   className="bg-[rgba(130,131,133,0.5)] text-white px-2  m-3 rounded-2xl
              border-2 border-transparent
@@ -69,7 +69,7 @@ const Nav = () => {
              hover:scale-110 hover:border-blue-600 pt-2"
 >
   SignUp
-</a>
+</Link>
 
 
       </div>

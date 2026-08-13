@@ -1,15 +1,27 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../Context/AppContext';
+import logo from "../assets/logo.jpeg"
 
 
 const JobCard = () => {
   const {job} = useContext(AppContext)
+
+   if (job.length === 0) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "#F7F8FB", fontFamily: "'Inter', system-ui, sans-serif" }}
+      >
+        <h1 className="text-lg font-semibold text-gray-400">No applications</h1>
+      </div>
+    );
+  }
   
   return (
     <>
     { job.map((item,key)=>(
       <div className="max-w-md rounded-xl border border-gray-200 bg-white p-6 m-6 shadow-sm">
-      {/* Badge */}
+      <img className='p-4' src={logo} alt="" />
       <div className="mb-4 inline-block">
         <span className="rounded-full border border-amber-300 bg-amber-50/50 px-3.5 py-1 text-sm font-medium text-amber-800">
           {item.type}
