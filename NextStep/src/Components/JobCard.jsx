@@ -4,7 +4,7 @@ import logo from "../assets/logo.jpeg"
 
 
 const JobCard = () => {
-  const {job} = useContext(AppContext)
+  const {job,setJob} = useContext(AppContext)
 
    if (job.length === 0) {
     return (
@@ -16,9 +16,25 @@ const JobCard = () => {
       </div>
     );
   }
+
+  const deleteJob = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:8081/${id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.text(); // your endpoint returns "deleted" as plain text
+      console.log(data);
+
+      
+      setJob(prev => prev.filter(job => job.id !== id));
+    } catch (err) {
+      console.error('Delete failed:', err);
+    }
+  };
   
   return (
     <>
+    <div className='flex'>
     { job.map((item,key)=>(
       <div className="max-w-md rounded-xl border border-gray-200 bg-white p-6 m-6 shadow-sm">
       <img className='p-4' src={logo} alt="" />
@@ -57,9 +73,11 @@ const JobCard = () => {
         <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors">
           View details
         </button>
+        <button onClick={(e)=>deleteJob(item.id)}  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors">Delete</button>
       </div>
     </div>
     ))}
+    </div>
     </>
     
     
