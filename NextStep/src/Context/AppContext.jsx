@@ -1,4 +1,5 @@
-import React, { createContext , useState , useRef} from "react";
+import axios from "axios";
+import React, { createContext , useState , useRef, useEffect} from "react";
 
 export const AppContext = createContext();
 
@@ -18,8 +19,8 @@ export const AppProvider = ({ children }) => {
  
   const[position,setPosition]=useState("");
   const[name,setName]=useState("");
-  const[renumeration,setRenumeration]=useState("");
-  const[desc,setDesc]=useState("");
+  const [remuneration, setremuneration] = useState("");
+const [description, setdescription] = useState("");
   const [candidates, setCandidates] = useState([]);
  const [skill, setSkills] = useState([]);
  const [uname, setUName] = useState("");
@@ -32,10 +33,14 @@ export const AppProvider = ({ children }) => {
   
   const [passoutYear, setPassoutYear] = useState("");
 
+useEffect(() => {
+    axios.get("http://localhost:8081/getjobs")
+      .then(res => setJob(res.data));
+  }, []);
 
  
   return (
-    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,renumeration,setRenumeration,desc,setDesc, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates}}>
+    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates}}>
       {children}
     </AppContext.Provider>
   );

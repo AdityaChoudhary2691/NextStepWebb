@@ -33,17 +33,17 @@ const JobCard = () => {
         {item.position}
       </h2>
       <p className="mt-1 text-base text-slate-600">
-        {item.company}
+        {item.name}
       </p>
 
       {/* Salary */}
       <p className="mt-3 text-lg font-bold text-emerald-700">
-        {item.renumeration}
+        {item.remuneration}
       </p>
 
       {/* Description */}
       <p className="mt-4 text-sm leading-relaxed text-slate-600">
-        {item.desc}
+        {item.description}
       </p>
 
       {/* Divider */}

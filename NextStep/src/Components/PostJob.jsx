@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
 import { Briefcase, GraduationCap, Building2, FileText, Send, CheckCircle2 } from "lucide-react";
 import { AppContext } from "../Context/AppContext";
+import axios from "axios";
 
 export default function PostJob() {
-  const {job,setJob,position,setPosition,name,setName,renumeration,setRenumeration,desc,setDesc}=useContext(AppContext);
+  const {job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription}=useContext(AppContext);
   
 
 const [jobType, setJobType] = useState("");
@@ -14,28 +15,33 @@ const handleClick = (event) => {
 
 const handlePosition = (event) => setPosition(event.target.value);
 const handleName = (event) => setName(event.target.value);
-const handleRenumeration = (event) => setRenumeration(event.target.value);
-const handleDesc = (event) => setDesc(event.target.value);
+const handleremuneration = (event) => setremuneration(event.target.value);
+const handledescription = (event) => setdescription(event.target.value);
 
-const onSubmit = (e) => {
+const onSubmit = async (e) => {
   e.preventDefault();
 
   const newJobs = {
     type: jobType,
     position,
-    company: name,
-    renumeration,
-    desc,
+    name,
+    remuneration: Number(remuneration),
+    description,
   };
 
-  setJob([...job, newJobs]);
+  try {
+    const res = await axios.post("http://localhost:8081/postjobs", newJobs);
+    setJob([...job, res.data]); // use the saved object (with real id) from the response
+  } catch (err) {
+    console.error("Error posting job:", err);
+  }
 
   // reset inputs
   setJobType("");
   setPosition("");
   setName("");
-  setRenumeration("");
-  setDesc("");
+  setremuneration("");
+  setdescription("");
 };
 
 
@@ -113,16 +119,16 @@ const onSubmit = (e) => {
           </div>
           <div>
             <label htmlFor="position" className="block text-sm font-medium text-[#1c1c1a] mb-2">
-              Renumeration
+              remuneration
             </label>
             <div className="relative">
               <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1c1c1a]/35" />
               <input
-                id="renumeration"
-                name="renumeration"
+                id="remuneration"
+                name="remuneration"
                 type="text"
-                value={renumeration}
-                onChange={handleRenumeration}
+                value={remuneration}
+                onChange={handleremuneration}
                 placeholder="e.g. 5 LPA"
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10 `}
               />
@@ -150,21 +156,21 @@ const onSubmit = (e) => {
             </div>
           </div>
 
-          {/* Description */}
+          {/* descriptionription */}
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-[#1c1c1a] mb-2">
-              Job Description
+            <label htmlFor="descriptionription" className="block text-sm font-medium text-[#1c1c1a] mb-2">
+              Job descriptionription
             </label>
             <div className="relative">
               <FileText className="absolute left-3.5 top-3.5 w-4 h-4 text-[#1c1c1a]/35" />
               <textarea
-                id="description"
-                name="description"
+                id="descriptionription"
+                name="descriptionription"
                 rows={5}
-                value={desc}
-                onChange={handleDesc}
+                value={description}
+                onChange={handledescription}
                
-                placeholder="Describe responsibilities, requirements, and what makes this opportunity a good fit..."
+                placeholder="descriptionribe responsibilities, requirements, and what makes this opportunity a good fit..."
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none resize-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10 `}
               />
             </div>
