@@ -18,13 +18,13 @@ public class SkillPosting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String uname;
-    private Long mobile;
-    private String email;
-    private String status;
-    private String apply;
-    private Integer passoutYear;
-    private String[] skill;
-    private String vedio;
-    private String resume;
+    private String username;
+    private String mobileno;
+    private String uemail;
+    private String ustatus;
+    private String applyingf;
+    private String upassoutYear;
+    private String[] uskills;
+    private String uvedio;
+    private String uresume;
 }
