@@ -13,6 +13,7 @@ import React, { useState, useRef, useContext } from "react";
   Sparkles,
 } from "lucide-react";
 import { AppContext } from "../Context/AppContext";
+import axios from "axios";
 
 const ACCENT = "#E8A33D";
 const INK ="#000000";
@@ -89,7 +90,10 @@ export default function ApplicationForm() {
       uresume:resume,
       uvedio:vedio
     }]
-    setCandidates(newCandidate);
+
+    axios.post("http://localhost:8081/postskills",newCandidate)
+    .then((res=>{
+ setCandidates([...candidates, res.data]);
 
     setApply("");
     setUName("");
@@ -100,6 +104,8 @@ export default function ApplicationForm() {
     setVedio("");
     setEmail("");
     setStatus("");
+    }))
+   
   }
   return (
     <div

@@ -38,7 +38,11 @@ useEffect(() => {
       .then(res => setJob(res.data));
   }, []);
 
- 
+ useEffect(()=>{
+  axios.get("http://localhost:8081/getskills")
+  .then(res=>setCandidates(res.data));
+ },[])
+
   return (
     <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates}}>
       {children}
