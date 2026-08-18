@@ -1,15 +1,19 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../Context/AppContext";
+import { User, Phone, GraduationCap, Briefcase, FileText, Video, Check, Send } from "lucide-react";
 
-export default function CandidateCard() {
+const ACCENT = "#E8A33D";
+const INK = "#000000";
+
+export default function CandidateCard({ onSendOffer }) {
   const { candidates } = useContext(AppContext);
   const [offerSent, setOfferSent] = useState(false);
   const [sending, setSending] = useState(false);
 
-  function handleSendOffer() {
+  function handleSendOffer(candidateId) {
     if (offerSent || sending) return;
     setSending(true);
-    Promise.resolve(onSendOffer?.())
+    Promise.resolve(onSendOffer?.(candidateId))
       .catch(() => {})
       .finally(() => {
         setSending(false);
@@ -99,13 +103,13 @@ export default function CandidateCard() {
               <Row icon={<Briefcase size={15} />} label="Applying for" value={value.applyingf} />
             </div>
 
-            {value.skills?.length > 0 && (
+            {value.uskills?.length > 0 && (
               <div className="mt-5 pt-5 border-t border-gray-100">
                 <p className="text-xs font-semibold text-gray-400 mb-2 tracking-wide">
                   SKILLS
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {value.skills.map((s) => (
+                  {value.uskills.map((s) => (
                     <span
                       key={s}
                       className="text-xs px-2.5 py-1 rounded-md font-medium"
@@ -138,7 +142,7 @@ export default function CandidateCard() {
           <div className="px-6 pb-6">
             <button
               type="button"
-              onClick={handleSendOffer}
+              onClick={() => handleSendOffer(value._id || value.id)}
               disabled={sending || offerSent}
               className="w-full py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-transform disabled:cursor-default"
               style={
@@ -162,6 +166,32 @@ export default function CandidateCard() {
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+function Row({ icon, label, value }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="flex items-center gap-1.5 text-gray-400">
+        {icon} {label}
+      </span>
+      <span className="font-medium text-right" style={{ color: INK }}>
+        {value || "—"}
+      </span>
+    </div>
+  );
+}
+
+function AttachmentRow({ icon, label, file, formatSize }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="flex items-center gap-1.5 text-gray-400">
+        {icon} {label}
+      </span>
+      <span className="font-medium text-right truncate max-w-[160px]" style={{ color: INK }}>
+        {file ? (typeof file === "object" ? `${file.name} (${formatSize(file.size)})` : file) : "Not provided"}
+      </span>
     </div>
   );
 }

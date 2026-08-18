@@ -34,7 +34,7 @@ const JobCard = () => {
   
   return (
     <>
-    <div className='flex'>
+    <div className='ml-90'>
     { job.map((item,key)=>(
       <div className="max-w-md rounded-xl border border-gray-200 bg-white p-6 m-6 shadow-sm">
       <img className='p-4' src={logo} alt="" />

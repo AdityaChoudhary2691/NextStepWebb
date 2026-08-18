@@ -79,7 +79,7 @@ export default function ApplicationForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const newCandidate=[...candidates,{
+    const newCandidate={
       username:uname,
       mobileno : mobile,
       uemail: email,
@@ -89,7 +89,7 @@ export default function ApplicationForm() {
       uskills:skill,
       uresume:resume,
       uvedio:vedio
-    }]
+    }
 
     axios.post("http://localhost:8081/postskills",newCandidate)
     .then((res=>{
