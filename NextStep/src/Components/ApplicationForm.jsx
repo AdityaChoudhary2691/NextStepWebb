@@ -319,16 +319,15 @@ export default function ApplicationForm() {
                 />
 
               <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
-                Vedio Intro <span style={{ color: ACCENT }}>*</span>
-              </label>
-              <div className="flex gap-2"></div>
-              <input
-                  type="text"
-                  placeholder="Vedio Intro"
-                  className="flex-1"
-                  value={vedio}
-                  onChange={handleVedio}
-                />
+  Video Intro <span style={{ color: ACCENT }}>*</span>
+</label>
+
+<input
+  type="file"
+  accept="video/*"
+  className="flex-1 w-full border border-gray-300 rounded-md p-2"
+  onChange={handleVedio}
+/>
             </section>
           </div>
 

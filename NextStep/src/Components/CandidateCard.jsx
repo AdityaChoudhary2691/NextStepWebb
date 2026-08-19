@@ -1,25 +1,32 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../Context/AppContext";
 import { User, Phone, GraduationCap, Briefcase, FileText, Video, Check, Send } from "lucide-react";
+import axios from "axios";
 
 const ACCENT = "#E8A33D";
 const INK = "#000000";
 
 export default function CandidateCard({ onSendOffer }) {
-  const { candidates } = useContext(AppContext);
+  const { candidates,setCandidates } = useContext(AppContext);
   const [offerSent, setOfferSent] = useState(false);
   const [sending, setSending] = useState(false);
 
-  function handleSendOffer(candidateId) {
-    if (offerSent || sending) return;
-    setSending(true);
-    Promise.resolve(onSendOffer?.(candidateId))
-      .catch(() => {})
-      .finally(() => {
-        setSending(false);
-        setOfferSent(true);
+  
+
+  const deleteSkill = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:8081/skills/${id}`, {
+        method: 'DELETE'
       });
-  }
+      const data = await res.text(); // your endpoint returns "deleted" as plain text
+      console.log(data);
+
+      
+      setCandidates(prev => prev.filter(job => job.id !== id));
+    } catch (err) {
+      console.error('Delete failed:', err);
+    }
+  };
 
   function getInitials(name) {
     return (name || "")
@@ -30,6 +37,21 @@ export default function CandidateCard({ onSendOffer }) {
       .map((w) => w[0]?.toUpperCase())
       .join("");
   }
+
+   const handleSend = async (value) => {
+    try {
+    setSending(true);
+      await axios.post("http://localhost:8081/sended", {
+        toEmail: value.uemail,
+        subject: "bye bye aditya choudhary is working",
+        body: "do not disturb aditya choudhary",
+      });
+      alert("Email sent successfully!");
+    } finally {
+      setOfferSent(true);
+      setSending(false);
+    }
+  };
 
   function formatSize(bytes) {
     if (!bytes) return "";
@@ -139,12 +161,13 @@ export default function CandidateCard({ onSendOffer }) {
           </div>
 
           {/* Footer action */}
-          <div className="px-6 pb-6">
+          <div className="px-6 pb-6 flex gap-5">
+            <button onClick={(e)=>deleteSkill(value.id)}  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors w-1/2">Delete</button>
             <button
               type="button"
-              onClick={() => handleSendOffer(value._id || value.id)}
+              onClick={() => handleSend(value)}
               disabled={sending || offerSent}
-              className="w-full py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-transform disabled:cursor-default"
+              className="w-full py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-transform disabled:cursor-default w-1/2"
               style={
                 offerSent
                   ? { backgroundColor: "#E7F4EC", color: "#3A7D5C" }
