@@ -42,7 +42,7 @@ public class SkillController {
             @RequestParam String mobileno,
             @RequestParam String uemail,
             @RequestParam String ustatus,
-            @RequestParam String applyingf,
+            @RequestParam String applyingf ,
             @RequestParam String upassoutYear,
             @RequestParam(required = false) String[] uskills,
             @RequestParam(required = false) MultipartFile video,
