@@ -1,14 +1,17 @@
 package com.aditya.nexepbackend.Controller;
 
-
-import com.aditya.nexepbackend.Model.JobPosting;
 import com.aditya.nexepbackend.Model.SendEmail;
 import com.aditya.nexepbackend.Model.SkillPosting;
 import com.aditya.nexepbackend.Service.EmailService;
 import com.aditya.nexepbackend.Service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin
@@ -26,9 +29,59 @@ public class SkillController {
         return service.getskills();
     }
 
+    // Keep for JSON-only (no file) inserts, if still needed
     @PostMapping("/postskills")
     public SkillPosting addskil(@RequestBody SkillPosting skill){
         return service.addskill(skill);
+    }
+
+    // New endpoint: multipart form-data, handles video + resume upload
+    @PostMapping(value = "/postskills/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addSkillWithFiles(
+            @RequestParam String username,
+            @RequestParam String mobileno,
+            @RequestParam String uemail,
+            @RequestParam String ustatus,
+            @RequestParam String applyingf,
+            @RequestParam String upassoutYear,
+            @RequestParam(required = false) String[] uskills,
+            @RequestParam(required = false) MultipartFile video,
+            @RequestParam(required = false) MultipartFile resume) {
+        try {
+            SkillPosting saved = service.addSkillWithFiles(
+                    username, mobileno, uemail, ustatus, applyingf,
+                    upassoutYear, uskills, video, resume);
+            return ResponseEntity.ok(saved);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("File upload failed: " + e.getMessage());
+        }
+    }
+
+    // Fetch video by candidate id
+    @GetMapping("/skills/{id}/video")
+    public ResponseEntity<byte[]> getVideo(@PathVariable Integer id) {
+        SkillPosting skill = service.getskills().stream()
+                .filter(s -> s.getId().equals(id))
+                .findFirst()
+                .orElseThrow();
+        if (skill.getUvedio() == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(skill.getVideoType()))
+                .body(skill.getUvedio());
+    }
+
+    // Fetch resume by candidate id
+    @GetMapping("/skills/{id}/resume")
+    public ResponseEntity<byte[]> getResume(@PathVariable Integer id) {
+        SkillPosting skill = service.getskills().stream()
+                .filter(s -> s.getId().equals(id))
+                .findFirst()
+                .orElseThrow();
+        if (skill.getUresume() == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(skill.getResumeType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + skill.getResumeName() + "\"")
+                .body(skill.getUresume());
     }
 
     @DeleteMapping("/skills/{id}")

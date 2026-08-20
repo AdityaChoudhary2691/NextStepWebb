@@ -1,10 +1,7 @@
 package com.aditya.nexepbackend.Model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -24,7 +21,21 @@ public class SkillPosting {
     private String ustatus;
     private String applyingf;
     private String upassoutYear;
+    @ElementCollection
+    @CollectionTable(name = "skill_posting_skills", joinColumns = @JoinColumn(name = "skill_posting_id"))
+    @Column(name = "skill")
     private String[] uskills;
-    private String uvedio;
-    private String uresume;
+
+    private String videoName;
+    private String videoType;
+
+    private String resumeName;
+    private String resumeType;
+    @Lob
+    @Column(columnDefinition = "BYTEA")
+    private byte[] uvedio;
+
+    @Lob
+    @Column(columnDefinition = "BYTEA")
+    private byte[] uresume;
 }

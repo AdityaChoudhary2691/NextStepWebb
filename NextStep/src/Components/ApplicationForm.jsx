@@ -68,9 +68,50 @@ export default function ApplicationForm() {
     setStatus(e);
   }
 
-  const handleResume=(e)=>{
-    setResume(e.target.value);
+  const [video, setVideo] = useState(null);
+const [videoDragActive, setVideoDragActive] = useState(false);
+
+const handleVideo = (e) => {
+  const file = e.target.files[0];
+  validateAndSetVideo(file);
+};
+
+const validateAndSetVideo = (file) => {
+  if (file && file.type.startsWith("video/")) {
+    setVideo(file);
+  } else if (file) {
+    alert("Please upload a video file");
   }
+};
+
+const handleVideoDrop = (e) => {
+  e.preventDefault();
+  setVideoDragActive(false);
+  validateAndSetVideo(e.dataTransfer.files[0]);
+};
+
+
+const [dragActive, setDragActive] = useState(false);
+
+const handleResume = (e) => {
+  const file = e.target.files[0];
+  validateAndSetFile(file);
+};
+
+const validateAndSetFile = (file) => {
+  if (file && file.type === "application/pdf") {
+    setResume(file);
+  } else if (file) {
+    alert("Please upload a PDF file");
+  }
+};
+
+const handleDrop = (e) => {
+  e.preventDefault();
+  setDragActive(false);
+  validateAndSetFile(e.dataTransfer.files[0]);
+};
+ 
   const handleVedio=(e)=>{
     setVedio(e.target.value);
   }
@@ -78,35 +119,44 @@ export default function ApplicationForm() {
 
 
   function handleSubmit(e) {
-    e.preventDefault();
-    const newCandidate={
-      username:uname,
-      mobileno : mobile,
-      uemail: email,
-      ustatus : status,
-      applyingf : apply,
-      upassoutYear: passoutYear,
-      uskills:skill,
-      uresume:resume,
-      uvedio:vedio
-    }
+  e.preventDefault();
 
-    axios.post("http://localhost:8081/postskills",newCandidate)
-    .then((res=>{
- setCandidates([...candidates, res.data]);
+  const formData = new FormData();
+  formData.append("username", uname);
+  formData.append("mobileno", mobile);
+  formData.append("uemail", email);
+  formData.append("ustatus", status);
+  formData.append("applyingf", apply);
+  formData.append("upassoutYear", passoutYear);
 
-    setApply("");
-    setUName("");
-    setSkills([]);
-    setMobile("");
-    setPassoutYear("");
-    setResume("");
-    setVedio("");
-    setEmail("");
-    setStatus("");
-    }))
-   
-  }
+  // backend expects String[] uskills — append each skill separately
+  skill.forEach((s) => formData.append("uskills", s));
+
+  if (resume) formData.append("resume", resume);
+  if (video) formData.append("video", video);
+
+  axios
+    .post("http://localhost:8081/postskills/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => {
+      setCandidates([...candidates, res.data]);
+
+      setApply("");
+      setUName("");
+      setSkills([]);
+      setMobile("");
+      setPassoutYear("");
+      setResume(null);
+      setVideo(null);
+      setEmail("");
+      setStatus("");
+    })
+    .catch((err) => {
+      console.error("Submission failed:", err);
+      alert("Something went wrong while submitting. Please try again.");
+    });
+}
   return (
     <div
       style={{ fontFamily: "'Inter', system-ui, sans-serif", backgroundColor: "#F7F8FB" }}
@@ -307,27 +357,86 @@ export default function ApplicationForm() {
             {/* Uploads */}
             <section className="grid m-5 ">
               <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
-                Resume <span style={{ color: ACCENT }}>*</span>
-              </label>
-              <div className="flex gap-2"></div>
-              <input
-                  type="text"
-                  value={resume}
-                  placeholder="Resume"
-                  className="flex-1"
-                  onChange={handleResume}
-                />
+  Resume <span style={{ color: ACCENT }}>*</span>
+</label>
 
-              <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
+<div
+  onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+  onDragLeave={() => setDragActive(false)}
+  onDrop={handleDrop}
+  onClick={() => document.getElementById("resume-input").click()}
+  className={`flex items-center gap-3 border-2 border-dashed rounded-lg px-4 py-3 cursor-pointer transition-colors
+    ${dragActive ? "border-current bg-gray-50" : "border-gray-300"}
+    ${resume ? "border-solid border-gray-300" : ""}
+  `}
+  style={dragActive ? { borderColor: ACCENT } : {}}
+>
+  <input
+    id="resume-input"
+    type="file"
+    accept="application/pdf"
+    className="hidden"
+    onChange={handleResume}
+  />
+
+  {resume ? (
+    <>
+      <span className="text-sm text-gray-800 truncate flex-1">{resume.name}</span>
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); setResume(null); }}
+        className="text-xs text-gray-500 hover:text-red-500"
+      >
+        Remove
+      </button>
+    </>
+  ) : (
+    <span className="text-sm text-gray-500 flex-1">
+      Click or drag a PDF here to upload
+    </span>
+  )}
+</div>
+
+             <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
   Video Intro <span style={{ color: ACCENT }}>*</span>
 </label>
 
-<input
-  type="file"
-  accept="video/*"
-  className="flex-1 w-full border border-gray-300 rounded-md p-2"
-  onChange={handleVedio}
-/>
+<div
+  onDragOver={(e) => { e.preventDefault(); setVideoDragActive(true); }}
+  onDragLeave={() => setVideoDragActive(false)}
+  onDrop={handleVideoDrop}
+  onClick={() => document.getElementById("video-input").click()}
+  className={`flex items-center gap-3 border-2 border-dashed rounded-lg px-4 py-3 cursor-pointer transition-colors
+    ${videoDragActive ? "border-current bg-gray-50" : "border-gray-300"}
+    ${video ? "border-solid border-gray-300" : ""}
+  `}
+  style={videoDragActive ? { borderColor: ACCENT } : {}}
+>
+  <input
+    id="video-input"
+    type="file"
+    accept="video/*"
+    className="hidden"
+    onChange={handleVideo}
+  />
+
+  {video ? (
+    <>
+      <span className="text-sm text-gray-800 truncate flex-1">{video.name}</span>
+      <button
+        type="button"
+        onClick={(e) => { e.stopPropagation(); setVideo(null); }}
+        className="text-xs text-gray-500 hover:text-red-500"
+      >
+        Remove
+      </button>
+    </>
+  ) : (
+    <span className="text-sm text-gray-500 flex-1">
+      Click or drag a video here to upload
+    </span>
+  )}
+</div>
             </section>
           </div>
 

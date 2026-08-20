@@ -6,13 +6,15 @@ import axios from "axios";
 const ACCENT = "#E8A33D";
 const INK = "#000000";
 
+
+
 export default function CandidateCard({ onSendOffer }) {
   const { candidates,setCandidates } = useContext(AppContext);
   const [offerSent, setOfferSent] = useState(false);
   const [sending, setSending] = useState(false);
 
-  
 
+  
   const deleteSkill = async (id) => {
     try {
       const res = await fetch(`http://localhost:8081/skills/${id}`, {
@@ -144,20 +146,10 @@ export default function CandidateCard({ onSendOffer }) {
               </div>
             )}
 
-            <div className="mt-5 pt-5 border-t border-gray-100 space-y-2.5">
-              <AttachmentRow
-                icon={<FileText size={15} />}
-                label="Resume"
-                file={value.uresume}
-                formatSize={formatSize}
-              />
-              <AttachmentRow
-                icon={<Video size={15} />}
-                label="Video intro"
-                file={value.uvedio}
-                formatSize={formatSize}
-              />
-            </div>
+           <div className="mt-5 pt-5 border-t border-gray-100 space-y-2.5">
+  <ResumeRow candidate={value} />
+  <VideoRow candidate={value} />
+</div>
           </div>
 
           {/* Footer action */}
@@ -215,6 +207,68 @@ function AttachmentRow({ icon, label, file, formatSize }) {
       <span className="font-medium text-right truncate max-w-[160px]" style={{ color: INK }}>
         {file ? (typeof file === "object" ? `${file.name} (${formatSize(file.size)})` : file) : "Not provided"}
       </span>
+    </div>
+  );
+}
+function ResumeRow({ candidate }) {
+  const hasResume = !!candidate.resumeName;
+  const url = `http://localhost:8081/skills/${candidate.id}/resume`;
+
+  return (
+    <div className="flex items-center justify-between">
+      <span className="flex items-center gap-1.5 text-gray-400">
+        <FileText size={15} /> Resume
+      </span>
+      {hasResume ? (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-right truncate max-w-[160px] hover:underline"
+          style={{ color: "#E8A33D" }}
+        >
+          {candidate.resumeName}
+        </a>
+      ) : (
+        <span className="font-medium text-right" style={{ color: "#000" }}>
+          Not provided
+        </span>
+      )}
+    </div>
+  );
+}
+
+function VideoRow({ candidate }) {
+  const [showVideo, setShowVideo] = useState(false);
+  const hasVideo = !!candidate.videoName;
+  const url = `http://localhost:8081/skills/${candidate.id}/video`;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <span className="flex items-center gap-1.5 text-gray-400">
+          <Video size={15} /> Video intro
+        </span>
+        {hasVideo ? (
+          <button
+            type="button"
+            onClick={() => setShowVideo((s) => !s)}
+            className="font-medium hover:underline"
+            style={{ color: "#E8A33D" }}
+          >
+            {showVideo ? "Hide" : "Play"}
+          </button>
+        ) : (
+          <span className="font-medium" style={{ color: "#000" }}>
+            Not provided
+          </span>
+        )}
+      </div>
+      {showVideo && hasVideo && (
+        <video controls className="w-full mt-2 rounded-lg">
+          <source src={url} type={candidate.videoType} />
+        </video>
+      )}
     </div>
   );
 }
