@@ -30,7 +30,8 @@ const [description, setdescription] = useState("");
  const [resume, setResume] = useState("")
  const [vedio, setVedio] = useState("")
  const [apply,setApply]=useState("");
-  
+  const [usub, setUsub] = useState("")
+  const [ubody, setBody] = useState("")
   const [passoutYear, setPassoutYear] = useState("");
 
 useEffect(() => {
@@ -44,7 +45,7 @@ useEffect(() => {
  },[])
 
   return (
-    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates}}>
+    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,usub,setBody,ubody,setUsub,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates}}>
       {children}
     </AppContext.Provider>
   );

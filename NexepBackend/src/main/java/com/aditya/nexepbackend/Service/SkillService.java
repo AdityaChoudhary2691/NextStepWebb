@@ -1,7 +1,9 @@
 package com.aditya.nexepbackend.Service;
 
 import com.aditya.nexepbackend.Model.SkillPosting;
+import com.aditya.nexepbackend.Model.User;
 import com.aditya.nexepbackend.Repo.SkillPostingRepo;
+import com.aditya.nexepbackend.Repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,17 +17,23 @@ public class SkillService {
     @Autowired
     SkillPostingRepo repo;
 
+    @Autowired
+    UserRepository userRepository;
+
     public List<SkillPosting> getskills() {
         return repo.findAll();
     }
 
-    public SkillPosting addskill(SkillPosting skill) {
+    public SkillPosting addskill(SkillPosting skill,Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        skill.setUser(user);
         return repo.save(skill);
     }
 
     public SkillPosting addSkillWithFiles(
             String username, String mobileno, String uemail, String ustatus,
-            String applyingf, String upassoutYear, String[] uskills,
+            String applyingf, String upassoutYear,String usub,String ubody, String[] uskills,
             MultipartFile video, MultipartFile resume) throws IOException {
 
         SkillPosting skill = new SkillPosting();
@@ -35,6 +43,8 @@ public class SkillService {
         skill.setUstatus(ustatus);
         skill.setApplyingf(applyingf);
         skill.setUpassoutYear(upassoutYear);
+        skill.setUbody(ubody);
+        skill.setUsub(usub);
         skill.setUskills(uskills);
 
         if (video != null && !video.isEmpty()) {

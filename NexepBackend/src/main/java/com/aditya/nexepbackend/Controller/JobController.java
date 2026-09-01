@@ -20,9 +20,9 @@ public class JobController {
         return service.getJob();
     }
 
-    @PostMapping("/postjobs")
-    public JobPosting addJob(@RequestBody JobPosting job){
-        return service.addJob(job);
+    @PostMapping("/postjobs/{a}")
+    public JobPosting create(@RequestBody JobPosting job, @PathVariable Long userId) {
+        return service.addJob(job, userId);
     }
 
     @DeleteMapping("/{a}")

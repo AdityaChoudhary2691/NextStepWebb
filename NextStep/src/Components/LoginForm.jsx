@@ -35,10 +35,28 @@ export default function LoginForm() {
   const c = COPY[role];
   const isSignup = mode === "signup";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Wire this up to your auth endpoint.
-    console.log({ role, mode, username, password });
+
+    const endpoint = isSignup ? "/api/auth/signup" : "/api/auth/login";
+
+    try {
+      const res = await fetch(`http://localhost:8081${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          password,
+          role: role.toUpperCase(), // "fresher" -> "FRESHER", "recruiter" -> "RECRUITER"
+        }),
+      });
+
+      const message = await res.text(); // your controller returns a plain String
+      alert(message);
+    } catch (err) {
+      alert("Something went wrong. Is the backend running?");
+      console.error(err);
+    }
   };
 
   return (
@@ -428,29 +446,7 @@ export default function LoginForm() {
             </button>
           </form>
 
-          <div className="lb-divider">OR</div>
-
-          <button type="button" className="lb-google">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M21.6 12.23c0-.75-.07-1.47-.19-2.16H12v4.1h5.4a4.62 4.62 0 0 1-2 3.03v2.5h3.24c1.9-1.75 2.96-4.33 2.96-7.47z"
-                stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"
-              />
-              <path
-                d="M12 22c2.7 0 4.97-.9 6.62-2.43l-3.24-2.5c-.9.6-2.05.96-3.38.96-2.6 0-4.8-1.75-5.59-4.11H3.06v2.58A10 10 0 0 0 12 22z"
-                stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"
-              />
-              <path
-                d="M6.41 13.92a5.98 5.98 0 0 1 0-3.84V7.5H3.06a10 10 0 0 0 0 9l3.35-2.58z"
-                stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"
-              />
-              <path
-                d="M12 6.05c1.47 0 2.79.5 3.83 1.5l2.87-2.87A9.94 9.94 0 0 0 12 2 10 10 0 0 0 3.06 7.5l3.35 2.58C7.2 7.8 9.4 6.05 12 6.05z"
-                stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"
-              />
-            </svg>
-            Continue with Google
-          </button>
+          
 
           <div className="lb-switch">
             {isSignup ? (

@@ -18,6 +18,8 @@ public class SkillPosting {
     private String username;
     private String mobileno;
     private String uemail;
+    private String usub;
+    private String ubody;
     private String ustatus;
     private String applyingf;
     private String upassoutYear;
@@ -38,4 +40,10 @@ public class SkillPosting {
     @Lob
     @Column(columnDefinition = "BYTEA")
     private byte[] uresume;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+
 }

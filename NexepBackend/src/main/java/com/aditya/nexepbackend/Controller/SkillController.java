@@ -1,5 +1,6 @@
 package com.aditya.nexepbackend.Controller;
 
+import com.aditya.nexepbackend.Model.JobPosting;
 import com.aditya.nexepbackend.Model.SendEmail;
 import com.aditya.nexepbackend.Model.SkillPosting;
 import com.aditya.nexepbackend.Service.EmailService;
@@ -30,9 +31,10 @@ public class SkillController {
     }
 
     // Keep for JSON-only (no file) inserts, if still needed
-    @PostMapping("/postskills")
-    public SkillPosting addskil(@RequestBody SkillPosting skill){
-        return service.addskill(skill);
+    @PostMapping("/postskills/{a}")
+
+    public SkillPosting create(@RequestBody SkillPosting skill, @PathVariable Long userId) {
+        return service.addskill(skill, userId);
     }
 
     // New endpoint: multipart form-data, handles video + resume upload
@@ -44,13 +46,15 @@ public class SkillController {
             @RequestParam String ustatus,
             @RequestParam String applyingf ,
             @RequestParam String upassoutYear,
+            @RequestParam String usub,
+            @RequestParam String ubody,
             @RequestParam(required = false) String[] uskills,
             @RequestParam(required = false) MultipartFile video,
             @RequestParam(required = false) MultipartFile resume) {
         try {
             SkillPosting saved = service.addSkillWithFiles(
                     username, mobileno, uemail, ustatus, applyingf,
-                    upassoutYear, uskills, video, resume);
+                    upassoutYear,usub,ubody, uskills, video, resume);
             return ResponseEntity.ok(saved);
         } catch (IOException e) {
             return ResponseEntity.status(500).body("File upload failed: " + e.getMessage());

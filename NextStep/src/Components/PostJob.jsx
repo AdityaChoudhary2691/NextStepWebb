@@ -3,8 +3,12 @@ import { Briefcase, GraduationCap, Building2, FileText, Send, CheckCircle2 } fro
 import { AppContext } from "../Context/AppContext";
 import axios from "axios";
 
+
+const ACCENT = "#E8A33D";
+const INK ="#000000";
+
 export default function PostJob() {
-  const {job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription}=useContext(AppContext);
+  const {job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription,usub,ubody,setUsub,setBody}=useContext(AppContext);
   
 
 const [jobType, setJobType] = useState("");
@@ -12,6 +16,13 @@ const [jobType, setJobType] = useState("");
 const handleClick = (event) => {
   setJobType(event.target.value);
 };
+
+const handleSubject=(e)=>{
+    setUsub(e.target.value);
+  }
+  const handleBody=(e)=>{
+    setBody(e.target.value);
+  }
 
 const handlePosition = (event) => setPosition(event.target.value);
 const handleName = (event) => setName(event.target.value);
@@ -161,7 +172,7 @@ const onSubmit = async (e) => {
           {/* descriptionription */}
           <div>
             <label htmlFor="descriptionription" className="block text-sm font-medium text-[#1c1c1a] mb-2">
-              Job descriptionription
+              Job description
             </label>
             <div className="relative">
               <FileText className="absolute left-3.5 top-3.5 w-4 h-4 text-[#1c1c1a]/35" />
@@ -176,6 +187,32 @@ const onSubmit = async (e) => {
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none resize-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10 `}
               />
             </div>
+             <Field
+                label="Subject for E-mail"
+                required
+                
+              >
+                <input
+                  type="text"
+                  value={usub}
+                 onChange={handleSubject}
+                  placeholder=""
+                  className="w-100 border rounded"
+                />
+              </Field>
+            <Field
+                label="Body for Email"
+                required
+               
+              >
+                <textarea
+                  type="textbox"
+                  value={ubody}
+                 onChange={handleBody}
+                  placeholder=""
+                  className="w-100  wrap-break-words border-1 rounded"
+                />
+              </Field>
           </div>
 
           {/* Submit */}
@@ -188,6 +225,19 @@ const onSubmit = async (e) => {
           </button>
         </form>
       </div>
+    </div>
+  );
+}
+
+function Field({ label, required, error, icon, full, children }) {
+  return (
+    <div className={full ? "sm:col-span-2" : ""}>
+      <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-2">
+        {icon}
+        {label} {required && <span style={{ color: ACCENT }}>*</span>}
+      </label>
+      {children}
+      {error && <p className="text-red-500 text-xs mt-1.5">{error}</p>}
     </div>
   );
 }

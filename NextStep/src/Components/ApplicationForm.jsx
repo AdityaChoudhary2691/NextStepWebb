@@ -22,7 +22,7 @@ export default function ApplicationForm() {
 
   const [inputValue, setInputValue] = useState("");
   
- const{years,skill,setSkills,uname,setUName,mobile,setMobile,email,setEmail,status,setStatus,resume,setResume,vedio,setVedio,apply,setApply,passoutYear,setPassoutYear,candidates,setCandidates} = useContext(AppContext)
+ const{years,skill,setSkills,uname,setUName,mobile,setMobile,email,setEmail,status,setStatus,resume,setResume,setVedio,apply,setApply,passoutYear,setPassoutYear,candidates,setCandidates,} = useContext(AppContext)
 
   
 
@@ -38,7 +38,6 @@ export default function ApplicationForm() {
    if(e.key==="Enter"){
      e.preventDefault();
      handleSkills();
-     
    }
   }
  const handleSkills=()=>{
@@ -51,6 +50,8 @@ export default function ApplicationForm() {
   const handleUsername=(e)=>{
     setUName(e.target.value);
   }
+
+  
   const handleMobile=(e)=>{
     setMobile(e.target.value);
   }
@@ -128,6 +129,7 @@ const handleDrop = (e) => {
   formData.append("ustatus", status);
   formData.append("applyingf", apply);
   formData.append("upassoutYear", passoutYear);
+ 
 
   // backend expects String[] uskills — append each skill separately
   skill.forEach((s) => formData.append("uskills", s));
@@ -151,6 +153,8 @@ const handleDrop = (e) => {
       setVideo(null);
       setEmail("");
       setStatus("");
+      setBody("");
+      setUsub("");
     })
     .catch((err) => {
       console.error("Submission failed:", err);
@@ -438,6 +442,7 @@ const handleDrop = (e) => {
   )}
 </div>
             </section>
+           
           </div>
 
           <div className="px-8 py-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between">

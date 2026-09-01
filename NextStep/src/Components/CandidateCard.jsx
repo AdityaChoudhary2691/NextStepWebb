@@ -10,8 +10,8 @@ const INK = "#000000";
 
 export default function CandidateCard({ onSendOffer }) {
   const { candidates,setCandidates } = useContext(AppContext);
-  const [offerSent, setOfferSent] = useState(false);
-  const [sending, setSending] = useState(false);
+ const [offerSentMap, setOfferSentMap] = useState({});
+const [sendingMap, setSendingMap] = useState({});
 
 
   
@@ -41,19 +41,20 @@ export default function CandidateCard({ onSendOffer }) {
   }
 
    const handleSend = async (value) => {
-    try {
-    setSending(true);
-      await axios.post("http://localhost:8081/sended", {
-        toEmail: value.uemail,
-        subject: "bye bye aditya choudhary is working",
-        body: "do not disturb aditya choudhary",
-      });
-      alert("Email sent successfully!");
-    } finally {
-      setOfferSent(true);
-      setSending(false);
-    }
-  };
+  const id = value.id;
+  try {
+    setSendingMap(prev => ({ ...prev, [id]: true }));
+    await axios.post("http://localhost:8081/sended", {
+      toEmail: value.uemail,
+      subject: value.usub,
+      body: value.ubody,
+    });
+    alert("Email sent successfully!");
+  } finally {
+    setOfferSentMap(prev => ({ ...prev, [id]: true }));
+    setSendingMap(prev => ({ ...prev, [id]: false }));
+  }
+};
 
   function formatSize(bytes) {
     if (!bytes) return "";
@@ -156,28 +157,28 @@ export default function CandidateCard({ onSendOffer }) {
           <div className="px-6 pb-6 flex gap-5">
             <button onClick={(e)=>deleteSkill(value.id)}  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors w-1/2">Delete</button>
             <button
-              type="button"
-              onClick={() => handleSend(value)}
-              disabled={sending || offerSent}
-              className="w-full py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-transform disabled:cursor-default w-1/2"
-              style={
-                offerSent
-                  ? { backgroundColor: "#E7F4EC", color: "#3A7D5C" }
-                  : { backgroundColor: ACCENT, color: "white" }
-              }
-            >
-              {offerSent ? (
-                <>
-                  <Check size={16} /> Offer letter sent
-                </>
-              ) : sending ? (
-                "Sending…"
-              ) : (
-                <>
-                  <Send size={15} /> Send offer letter
-                </>
-              )}
-            </button>
+  type="button"
+  onClick={() => handleSend(value)}
+  disabled={sendingMap[value.id] || offerSentMap[value.id]}
+  className="w-full py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-transform disabled:cursor-default w-1/2"
+  style={
+    offerSentMap[value.id]
+      ? { backgroundColor: "#E7F4EC", color: "#3A7D5C" }
+      : { backgroundColor: ACCENT, color: "white" }
+  }
+>
+  {offerSentMap[value.id] ? (
+    <>
+      <Check size={16} /> Offer letter sent
+    </>
+  ) : sendingMap[value.id] ? (
+    "Sending…"
+  ) : (
+    <>
+      <Send size={15} /> Send offer letter
+    </>
+  )}
+</button>
           </div>
         </div>
       ))}
