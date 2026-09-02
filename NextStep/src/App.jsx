@@ -8,6 +8,8 @@ import ApplicationForm from './Components/ApplicationForm';
 import CandidateCard from './Components/CandidateCard';
 import LoginForm from './Components/LoginForm';
 import NexepHome from './Components/NexepHome'
+import FresherDashboard from './Components/FresherDashboard';
+import RecuiterDashboard from './Components/RecuiterDashboard';
 
 const pageTransition = {
   initial: { opacity: 0, scale: 0.95 },
@@ -36,6 +38,8 @@ const App = () => {
   return (
     <>
       {!hideNav && <Nav />}
+      <FresherDashboard></FresherDashboard>
+      <RecuiterDashboard></RecuiterDashboard>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path='/' element={<AnimatedPage><NexepHome/></AnimatedPage>}/>

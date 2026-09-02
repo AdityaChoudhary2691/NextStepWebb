@@ -51,8 +51,22 @@ export default function LoginForm() {
         }),
       });
 
-      const message = await res.text(); // your controller returns a plain String
-      alert(message);
+      if (isSignup) {
+        const message = await res.text(); // signup returns a plain String
+        alert(message);
+        
+      } else {
+        const data = await res.json(); // login returns { id, username, role, message }
+
+        if (data.id) {
+          localStorage.setItem(
+            "nexepUser",
+            JSON.stringify({ id: data.id, username: data.username, role: data.role })
+          );
+        }
+
+        alert(data.message);
+      }
     } catch (err) {
       alert("Something went wrong. Is the backend running?");
       console.error(err);

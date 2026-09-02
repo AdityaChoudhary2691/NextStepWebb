@@ -8,7 +8,7 @@ const ACCENT = "#E8A33D";
 const INK ="#000000";
 
 export default function PostJob() {
-  const {job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription,usub,ubody,setUsub,setBody}=useContext(AppContext);
+  const {job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription}=useContext(AppContext);
   
 
 const [jobType, setJobType] = useState("");
@@ -32,6 +32,13 @@ const handledescription = (event) => setdescription(event.target.value);
 const onSubmit = async (e) => {
   e.preventDefault();
 
+  const storedUser = localStorage.getItem("nexepUser");
+  if (!storedUser) {
+    alert("Please log in first.");
+    return;
+  }
+  const { id: userId } = JSON.parse(storedUser);
+
   const newJobs = {
     type: jobType,
     position,
@@ -41,20 +48,20 @@ const onSubmit = async (e) => {
   };
 
   try {
-    const res = await axios.post("http://localhost:8081/postjobs", newJobs);
-    setJob([...job, res.data]); // use the saved object (with real id) from the response
+    const res = await axios.post(
+      `http://localhost:8081/postjobs/${userId}`,
+      newJobs
+    );
+    setJob([...job, res.data]); 
   } catch (err) {
     console.error("Error posting job:", err);
   }
-
-  // reset inputs
   setJobType("");
   setPosition("");
   setName("");
   setremuneration("");
   setdescription("");
 };
-
  
 
 

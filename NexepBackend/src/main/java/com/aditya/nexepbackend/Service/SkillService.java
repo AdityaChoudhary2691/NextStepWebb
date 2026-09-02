@@ -32,11 +32,15 @@ public class SkillService {
     }
 
     public SkillPosting addSkillWithFiles(
-            String username, String mobileno, String uemail, String ustatus,
-            String applyingf, String upassoutYear,String usub,String ubody, String[] uskills,
+            Long userId, String username, String mobileno, String uemail, String ustatus,
+            String applyingf, String upassoutYear, String usub, String ubody, String[] uskills,
             MultipartFile video, MultipartFile resume) throws IOException {
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         SkillPosting skill = new SkillPosting();
+        skill.setUser(user);
         skill.setUsername(username);
         skill.setMobileno(mobileno);
         skill.setUemail(uemail);
@@ -65,4 +69,5 @@ public class SkillService {
     public void deleteskill(Integer id) {
         repo.deleteById(id);
     }
+
 }

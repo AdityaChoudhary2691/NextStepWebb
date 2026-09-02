@@ -119,19 +119,25 @@ const handleDrop = (e) => {
  
 
 
-  function handleSubmit(e) {
+function handleSubmit(e) {
   e.preventDefault();
 
+  const storedUser = localStorage.getItem("nexepUser");
+  if (!storedUser) {
+    alert("Please log in first.");
+    return;
+  }
+  const { id: userId } = JSON.parse(storedUser);
+
   const formData = new FormData();
+  formData.append("userId", userId);
   formData.append("username", uname);
   formData.append("mobileno", mobile);
   formData.append("uemail", email);
   formData.append("ustatus", status);
   formData.append("applyingf", apply);
   formData.append("upassoutYear", passoutYear);
- 
 
-  // backend expects String[] uskills — append each skill separately
   skill.forEach((s) => formData.append("uskills", s));
 
   if (resume) formData.append("resume", resume);
@@ -153,8 +159,6 @@ const handleDrop = (e) => {
       setVideo(null);
       setEmail("");
       setStatus("");
-      setBody("");
-      setUsub("");
     })
     .catch((err) => {
       console.error("Submission failed:", err);
