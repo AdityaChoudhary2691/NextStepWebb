@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AppContext } from "../Context/AppContext";
 import { Link } from "react-router";
+import logo from '../assets/logo.jpeg'
 
 export default function RecruiterDashboard() {
   const { job, candidates, usub, setUsub, ubody, setBody } = useContext(AppContext);
@@ -181,7 +182,7 @@ export default function RecruiterDashboard() {
       `}</style>
 
       <div className="rd-topbar">
-        <span className="rd-logo">Nexep</span>
+        <Link to="/"><img src={logo} alt="" className='w-22 h-14 rounded m-2'/></Link>
         <span className="rd-user">{storedUser.username || "Recruiter"}</span>
       </div>
 
