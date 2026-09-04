@@ -1,5 +1,9 @@
 import { useContext } from "react";
 import { AppContext } from "../Context/AppContext";
+import logo from '../assets/logo.jpeg'
+
+import { CircleUserRound, Link2 } from 'lucide-react';
+import { Link } from "react-router";
 
 export default function FresherDashboard() {
   const { job, candidates } = useContext(AppContext);
@@ -131,7 +135,7 @@ export default function FresherDashboard() {
       `}</style>
 
       <div className="fd-topbar">
-        <span className="fd-logo">Nexep</span>
+        <Link to="/"><img src={logo} alt="" className='w-22 h-14 rounded'/></Link>
         <span className="fd-user">{storedUser.username || "Fresher"}</span>
       </div>
 
@@ -147,12 +151,12 @@ export default function FresherDashboard() {
         <div className="fd-card">
           <h3>Post your profile</h3>
           <p>Add your skills, resume, and a short video intro.</p>
-          <button className="fd-btn">Post Your Profile →</button>
+          <Link to="/postskills" className="fd-btn">Post Your Profile →</Link>
         </div>
         <div className="fd-card">
           <h3>Browse open roles</h3>
           <p>See jobs and internships posted by recruiters.</p>
-          <button className="fd-btn outline">Browse Jobs →</button>
+          <Link to="/findjobs" className="fd-btn outline">Browse Jobs →</Link>
         </div>
       </div>
 

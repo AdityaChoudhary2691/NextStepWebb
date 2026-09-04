@@ -1,10 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
-/**
- * Launchbay — Login / Sign up
- * Black & white, two-sided marketplace framing (Fresher vs Recruiter).
- * Single source of truth: `role` drives both the hero mark and the form.
- */
+
 
 const COPY = {
   fresher: {
@@ -27,52 +24,64 @@ const COPY = {
 
 export default function LoginForm() {
   const [role, setRole] = useState("fresher");
-  const [mode, setMode] = useState("signin"); // 'signin' | 'signup'
+  const [mode, setMode] = useState("signin"); 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
+  const navigate=useNavigate();
 
   const c = COPY[role];
   const isSignup = mode === "signup";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const endpoint = isSignup ? "/api/auth/signup" : "/api/auth/login";
+  const endpoint = isSignup ? "/api/auth/signup" : "/api/auth/login";
 
-    try {
-      const res = await fetch(`http://localhost:8081${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          password,
-          role: role.toUpperCase(), // "fresher" -> "FRESHER", "recruiter" -> "RECRUITER"
-        }),
-      });
+  try {
+    const res = await fetch(`http://localhost:8081${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username,
+        password,
+        role: role.toUpperCase(),
+      }),
+    });
 
-      if (isSignup) {
-        const message = await res.text(); // signup returns a plain String
-        alert(message);
-        
-      } else {
-        const data = await res.json(); // login returns { id, username, role, message }
-
-        if (data.id) {
-          localStorage.setItem(
-            "nexepUser",
-            JSON.stringify({ id: data.id, username: data.username, role: data.role })
-          );
-        }
-
-        alert(data.message);
-      }
-    } catch (err) {
-      alert("Something went wrong. Is the backend running?");
-      console.error(err);
+    if (!res.ok) {
+      const msg = await res.text();
+      alert(msg || "Something went wrong.");
+      return;
     }
-  };
 
+    if (isSignup) {
+      const message = await res.text();
+      alert(message);
+      setMode("signin");
+    } else {
+      const data = await res.json();
+
+      if (data.id) {
+        localStorage.setItem(
+          "nexepUser",
+          JSON.stringify({ id: data.id, username: data.username, role: data.role })
+        );
+
+        if (data.role === "FRESHER") {
+          navigate("/fresherDashboard");
+        } else if (data.role === "RECRUITER") {
+          navigate("/recruiterDashboard");
+        }
+      } else {
+        alert(data.message || "Login failed.");
+      }
+    }
+  } catch (err) {
+    alert("Something went wrong. Is the backend running?");
+    console.error(err);
+  }
+};
   return (
     <div className="lb-root">
       <style>{`

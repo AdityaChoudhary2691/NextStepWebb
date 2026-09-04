@@ -3,6 +3,8 @@ package com.aditya.nexepbackend.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -33,11 +35,11 @@ public class SkillPosting {
 
     private String resumeName;
     private String resumeType;
-    @Lob
+    @JdbcTypeCode(SqlTypes.VARBINARY)
     @Column(columnDefinition = "BYTEA")
     private byte[] uvedio;
 
-    @Lob
+    @JdbcTypeCode(SqlTypes.VARBINARY)
     @Column(columnDefinition = "BYTEA")
     private byte[] uresume;
 

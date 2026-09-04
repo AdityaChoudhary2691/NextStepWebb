@@ -24,12 +24,7 @@ public class SkillService {
         return repo.findAll();
     }
 
-    public SkillPosting addskill(SkillPosting skill,Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        skill.setUser(user);
-        return repo.save(skill);
-    }
+
 
     public SkillPosting addSkillWithFiles(
             Long userId, String username, String mobileno, String uemail, String ustatus,

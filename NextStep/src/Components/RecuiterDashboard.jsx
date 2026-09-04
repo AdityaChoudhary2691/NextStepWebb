@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../Context/AppContext";
+import { Link } from "react-router";
 
 export default function RecruiterDashboard() {
   const { job, candidates, usub, setUsub, ubody, setBody } = useContext(AppContext);
@@ -196,12 +197,12 @@ export default function RecruiterDashboard() {
         <div className="rd-card">
           <h3>Post a job</h3>
           <p>Share a full-time or internship opening.</p>
-          <button className="rd-btn">Post a Job →</button>
+          <Link to="/postjobs" className="rd-btn">Post a Job →</Link>
         </div>
         <div className="rd-card">
           <h3>Browse candidates</h3>
           <p>See fresher profiles, resumes, and video intros.</p>
-          <button className="rd-btn outline">Browse Candidates →</button>
+          <Link to="/findskills" className="rd-btn outline">Browse Candidates →</Link>
         </div>
       </div>
 

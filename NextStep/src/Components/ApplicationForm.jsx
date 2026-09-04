@@ -144,9 +144,7 @@ function handleSubmit(e) {
   if (video) formData.append("video", video);
 
   axios
-    .post("http://localhost:8081/postskills/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
+    .post("http://localhost:8081/postskills/upload", formData)
     .then((res) => {
       setCandidates([...candidates, res.data]);
 

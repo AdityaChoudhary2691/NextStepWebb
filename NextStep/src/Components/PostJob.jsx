@@ -8,7 +8,7 @@ const ACCENT = "#E8A33D";
 const INK ="#000000";
 
 export default function PostJob() {
-  const {job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription}=useContext(AppContext);
+  const {job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription,usub,ubody}=useContext(AppContext);
   
 
 const [jobType, setJobType] = useState("");

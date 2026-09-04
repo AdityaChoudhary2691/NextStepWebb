@@ -10,6 +10,7 @@ import LoginForm from './Components/LoginForm';
 import NexepHome from './Components/NexepHome'
 import FresherDashboard from './Components/FresherDashboard';
 import RecuiterDashboard from './Components/RecuiterDashboard';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 const pageTransition = {
   initial: { opacity: 0, scale: 0.95 },
@@ -33,13 +34,12 @@ function AnimatedPage({ children }) {
 
 const App = () => {
   const location = useLocation();
-  const hideNav = location.pathname === '/login';
+  const hideNav = location.pathname === '/login' || location.pathname === '/fresherDashboard' || location.pathname === '/recruiterDashboard';
 
   return (
     <>
       {!hideNav && <Nav />}
-      <FresherDashboard></FresherDashboard>
-      <RecuiterDashboard></RecuiterDashboard>
+
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path='/' element={<AnimatedPage><NexepHome/></AnimatedPage>}/>
@@ -48,6 +48,28 @@ const App = () => {
           <Route path='/postskills' element={<AnimatedPage><ApplicationForm /></AnimatedPage>} />
           <Route path='/findskills' element={<AnimatedPage><CandidateCard /></AnimatedPage>} />
           <Route path='/login' element={<AnimatedPage><LoginForm /></AnimatedPage>} />
+
+          <Route
+            path='/fresherDashboard'
+            element={
+              <AnimatedPage>
+                <ProtectedRoute allowedRole="FRESHER">
+                  <FresherDashboard />
+                </ProtectedRoute>
+              </AnimatedPage>
+            }
+          />
+
+          <Route
+            path='/recruiterDashboard'
+            element={
+              <AnimatedPage>
+                <ProtectedRoute allowedRole="RECRUITER">
+                  <RecuiterDashboard />
+                </ProtectedRoute>
+              </AnimatedPage>
+            }
+          />
         </Routes>
       </AnimatePresence>
     </>
