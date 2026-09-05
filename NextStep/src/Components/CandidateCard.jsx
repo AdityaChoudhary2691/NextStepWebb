@@ -15,20 +15,6 @@ const [sendingMap, setSendingMap] = useState({});
 
 
   
-  const deleteSkill = async (id) => {
-    try {
-      const res = await fetch(`http://localhost:8081/skills/${id}`, {
-        method: 'DELETE'
-      });
-      const data = await res.text(); // your endpoint returns "deleted" as plain text
-      console.log(data);
-
-      
-      setCandidates(prev => prev.filter(job => job.id !== id));
-    } catch (err) {
-      console.error('Delete failed:', err);
-    }
-  };
 
   function getInitials(name) {
     return (name || "")
@@ -153,9 +139,9 @@ const [sendingMap, setSendingMap] = useState({});
 </div>
           </div>
 
-          {/* Footer action */}
+          
           <div className="px-6 pb-6 flex gap-5">
-            <button onClick={(e)=>deleteSkill(value.id)}  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors w-1/2">Delete</button>
+            
             <button
   type="button"
   onClick={() => handleSend(value)}

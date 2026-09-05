@@ -7,6 +7,7 @@ import PostJob from './Components/PostJob';
 import ApplicationForm from './Components/ApplicationForm';
 import CandidateCard from './Components/CandidateCard';
 import LoginForm from './Components/LoginForm';
+import YourCard from './Components/YourCard'
 import NexepHome from './Components/NexepHome'
 import FresherDashboard from './Components/FresherDashboard';
 import RecuiterDashboard from './Components/RecuiterDashboard';
@@ -44,6 +45,7 @@ const App = () => {
         <Routes location={location} key={location.pathname}>
           <Route path='/' element={<AnimatedPage><NexepHome/></AnimatedPage>}/>
           <Route path='/findjobs' element={<AnimatedPage><JobCard /></AnimatedPage>} />
+          <Route path='/YourCard' element={<AnimatedPage><YourCard/></AnimatedPage>} />
           <Route path='/postjobs' element={<AnimatedPage><PostJob /></AnimatedPage>} />
           <Route path='/postskills' element={<AnimatedPage><ApplicationForm /></AnimatedPage>} />
           <Route path='/findskills' element={<AnimatedPage><CandidateCard /></AnimatedPage>} />
