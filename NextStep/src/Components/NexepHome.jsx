@@ -131,7 +131,7 @@ export default function NexepHome() {
             </button>
           </div>
 
-          <div className="flex items-center gap-8 mt-12 pt-8" style={{ borderTop: `1px solid ${LINE}` }}>
+          {/* <div className="flex items-center gap-8 mt-12 pt-8" style={{ borderTop: `1px solid ${LINE}` }}>
             {[
               [`${candidates?.length ?? 0}`, "fresher profiles"],
               [`${jobs?.length ?? 0}`, "companies hiring"],
@@ -142,7 +142,7 @@ export default function NexepHome() {
                 <div className="text-xs uppercase tracking-wider mt-1" style={{ color: MUTE }}>{l}</div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
         <div className="relative flex justify-center">
           <div
@@ -217,27 +217,6 @@ export default function NexepHome() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section id="skills" className="max-w-6xl mx-auto px-6 py-20">
-        <h2 className="font-serif text-4xl mb-3" style={{ letterSpacing: "-0.01em" }}>
-          Search by what you can do
-        </h2>
-        <p className="text-sm mb-8 max-w-md" style={{ color: MUTE }}>
-          Every profile and posting on Nexep is tagged by skill — so matches are made on ability, not just a job title.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          {skills.map((s) => (
-            <span
-              key={s}
-              style={{ borderColor: LINE }}
-              className="px-4 py-2 rounded-full text-sm font-medium border hover:bg-black hover:text-white transition-colors cursor-default"
-            >
-              {s}
-            </span>
-          ))}
         </div>
       </section>
 

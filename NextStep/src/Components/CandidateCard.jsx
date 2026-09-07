@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { AppContext } from "../Context/AppContext";
 import { User, Phone, GraduationCap, Briefcase, FileText, Video, Check, Send } from "lucide-react";
 import axios from "axios";
+import Navbar1 from "./Nav1";
 
 const ACCENT = "#E8A33D";
 const INK = "#000000";
@@ -61,6 +62,8 @@ const [sendingMap, setSendingMap] = useState({});
   }
 
   return (
+    <>
+    
     <div className="min-h-screen flex items-center pt-12 pb-6 px-6 justify-center p-6 flex-wrap gap-5" style={{ backgroundColor: "#F7F8FB", fontFamily: "'Inter', system-ui, sans-serif" }}>
       {candidates.map((value, index) => (
         <div
@@ -169,8 +172,12 @@ const [sendingMap, setSendingMap] = useState({});
         </div>
       ))}
     </div>
+    </>
   );
+
 }
+
+
 
 function Row({ icon, label, value }) {
   return (

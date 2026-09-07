@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { AppContext } from "../Context/AppContext";
 import axios from "axios";
+import Navbar1 from "./Nav1";
 
 const ACCENT = "#E8A33D";
 const INK = "#000000";
@@ -232,6 +233,8 @@ export default function ApplicationForm() {
   }
 
   return (
+    <>
+  
     <div
       style={{ fontFamily: "'Inter', system-ui, sans-serif", backgroundColor: "#F7F8FB" }}
       className="min-h-screen py-10 px-4"
@@ -607,6 +610,7 @@ export default function ApplicationForm() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

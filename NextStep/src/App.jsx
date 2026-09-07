@@ -12,6 +12,8 @@ import NexepHome from './Components/NexepHome'
 import FresherDashboard from './Components/FresherDashboard';
 import RecuiterDashboard from './Components/RecuiterDashboard';
 import ProtectedRoute from './Components/ProtectedRoute';
+import PostedCard from './Components/PostedCard';
+import Navbar1 from './Components/Nav1';
 
 const pageTransition = {
   initial: { opacity: 0, scale: 0.95 },
@@ -35,17 +37,18 @@ function AnimatedPage({ children }) {
 
 const App = () => {
   const location = useLocation();
-  const hideNav = location.pathname === '/login' || location.pathname === '/fresherDashboard' || location.pathname === '/recruiterDashboard';
+  const hideNav = location.pathname === '/login' || location.pathname === '/fresherDashboard' || location.pathname === '/recruiterDashboard' || location.pathname === '/postskills' || location.pathname === '/findskills'  || location.pathname === '/postjobs' || location.pathname === '/findjobs' || location.pathname === '/PostedCards' || location.pathname === '/YourCard';
 
   return (
     <>
-      {!hideNav && <Nav />}
+      {hideNav ? <Navbar1 /> : <Nav />}
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path='/' element={<AnimatedPage><NexepHome/></AnimatedPage>}/>
           <Route path='/findjobs' element={<AnimatedPage><JobCard /></AnimatedPage>} />
           <Route path='/YourCard' element={<AnimatedPage><YourCard/></AnimatedPage>} />
+          <Route path='/PostedCard' element={<AnimatedPage><PostedCard/></AnimatedPage>} />
           <Route path='/postjobs' element={<AnimatedPage><PostJob /></AnimatedPage>} />
           <Route path='/postskills' element={<AnimatedPage><ApplicationForm /></AnimatedPage>} />
           <Route path='/findskills' element={<AnimatedPage><CandidateCard /></AnimatedPage>} />

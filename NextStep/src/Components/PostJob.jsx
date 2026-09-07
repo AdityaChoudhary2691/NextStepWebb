@@ -47,14 +47,12 @@ export default function PostJob() {
     const { id: userId } = JSON.parse(storedUser);
 
     const newJobs = {
-      type: jobType,
-      position,
-      name,
-      remuneration: Number(remuneration),
-      description,
-      usub,
-      ubody,
-    };
+  type: jobType,
+  position,
+  name,
+  remuneration: Number(remuneration),
+  description,
+};
 
     try {
       const res = await axios.post(
@@ -266,24 +264,7 @@ export default function PostJob() {
               />
             </div>
 
-            <Field label="Subject for E-mail" required>
-              <input
-                type="text"
-                value={usub}
-                onChange={handleSubject}
-                placeholder=""
-                className="w-100 border rounded"
-              />
-            </Field>
-
-            <Field label="Body for Email" required>
-              <textarea
-                value={ubody}
-                onChange={handleBody}
-                placeholder=""
-                className="w-100 wrap-break-words border-1 rounded"
-              />
-            </Field>
+            
           </div>
 
           {/* Submit */}

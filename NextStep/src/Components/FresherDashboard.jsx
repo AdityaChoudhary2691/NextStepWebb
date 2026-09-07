@@ -10,18 +10,7 @@ export default function FresherDashboard() {
   const storedUser = JSON.parse(localStorage.getItem("nexepUser") || "{}");
   const navigate = useNavigate();
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef(null);
-
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+ 
 
   const handleLogout = () => {
     localStorage.removeItem("nexepUser");
@@ -266,48 +255,7 @@ export default function FresherDashboard() {
 }
       `}</style>
 
-      <div className="fd-topbar">
-        <Link to="/"><img src={logo} alt="" className='w-22 h-14 rounded'/></Link>
-
-        <div className="fd-user-wrap" ref={menuRef}>
-          <button
-            type="button"
-            className="fd-user-trigger"
-            onClick={() => setMenuOpen((prev) => !prev)}
-          >
-            <CircleUserRound size={25} />
-            {storedUser.username || "Fresher"}
-            <ChevronDown size={14} className={`fd-chevron ${menuOpen ? "open" : ""}`} />
-          </button>
-
-          {menuOpen && (
-            <div className="fd-dropdown">
-              <Link
-                to="/YourCard"
-                className="fd-dropdown-item"
-                onClick={() => setMenuOpen(false)}
-              >
-                My Posted
-              </Link>
-              <Link
-                to="/myapplications"
-                className="fd-dropdown-item"
-                onClick={() => setMenuOpen(false)}
-              >
-                My Applications
-              </Link>
-              <div className="fd-dropdown-divider" />
-              <button
-                type="button"
-                className="fd-dropdown-item danger"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+      
 
       <div className="fd-hero">
         <div className="fd-eyebrow">Fresher Dashboard</div>

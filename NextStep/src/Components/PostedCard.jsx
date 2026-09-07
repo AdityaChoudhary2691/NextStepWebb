@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../Context/AppContext';
 import logo from "../assets/logo.jpeg"
-import Navbar1 from './Nav1';
 
 
-const JobCard = () => {
+const PostedCard = () => {
   const {job,setJob} = useContext(AppContext)
 
    if (job.length === 0) {
@@ -20,7 +19,7 @@ const JobCard = () => {
 
   const deleteJob = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8081/postjobs/${id}`, {
+      const res = await fetch(`http://localhost:8081/${id}`, {
         method: 'DELETE'
       });
       const data = await res.text(); // your endpoint returns "deleted" as plain text
@@ -32,20 +31,9 @@ const JobCard = () => {
       console.error('Delete failed:', err);
     }
   };
-
-  const formatPostedDate = (dateString) => {
-    if (!dateString) return "Posted recently";
-    const date = new Date(dateString);
-    return `Posted on ${date.toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })}`;
-  };
   
   return (
     <>
-    
     <div className='ml-90'>
     { job.map((item,key)=>(
       <div className="max-w-md rounded-xl border border-gray-200 bg-white p-6 m-6 shadow-sm">
@@ -69,23 +57,23 @@ const JobCard = () => {
         {item.remuneration}
       </p>
 
-      
+      {/* Description */}
       <p className="mt-4 text-sm leading-relaxed text-slate-600">
         {item.description}
       </p>
 
-      
+      {/* Divider */}
       <hr className="my-5 border-gray-100" />
 
-      
+      {/* Footer */}
       <div className="flex items-center justify-between">
         <span className="text-xs text-slate-400">
-          {formatPostedDate(item.postedDate)}
+          Posted recently
         </span>
         <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors">
           View details
         </button>
-    
+        <button onClick={(e)=>deleteJob(item.id)}  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors">Delete</button>
       </div>
     </div>
     ))}
@@ -96,4 +84,4 @@ const JobCard = () => {
   );
 }
 
-export default JobCard;
+export default PostedCard;

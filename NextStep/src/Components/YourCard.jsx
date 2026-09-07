@@ -1,11 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext ,useState} from "react";
 import { AppContext } from "../Context/AppContext";
-import { User, Phone, GraduationCap, Briefcase, FileText, Video } from "lucide-react";
+import { User, Phone, GraduationCap, Briefcase, FileText, Video, Check, Send } from "lucide-react";
+
 
 const ACCENT = "#E8A33D";
 const INK = "#000000";
 
-export default function CandidateCard() {
+export default function YourCard() {
   const { candidates, setCandidates } = useContext(AppContext);
   const storedUser = JSON.parse(localStorage.getItem("nexepUser") || "{}");
 
@@ -154,7 +155,6 @@ export default function CandidateCard() {
     </div>
   );
 }
-
 function Row({ icon, label, value }) {
   return (
     <div className="flex items-center justify-between">
@@ -170,7 +170,7 @@ function Row({ icon, label, value }) {
 
 function ResumeRow({ candidate }) {
   const hasResume = !!candidate.resumeName;
-  const url = `http://localhost:8081/skills/${candidate.id || candidate._id}/resume`;
+  const url = `http://localhost:8081/skills/${candidate.id}/resume`;
 
   return (
     <div className="flex items-center justify-between">
@@ -199,7 +199,7 @@ function ResumeRow({ candidate }) {
 function VideoRow({ candidate }) {
   const [showVideo, setShowVideo] = useState(false);
   const hasVideo = !!candidate.videoName;
-  const url = `http://localhost:8081/skills/${candidate.id || candidate._id}/video`;
+  const url = `http://localhost:8081/skills/${candidate.id}/video`;
 
   return (
     <div>
