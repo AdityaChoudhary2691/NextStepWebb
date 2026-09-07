@@ -211,6 +211,59 @@ export default function FresherDashboard() {
           text-transform: uppercase;
           color: #8a8a86;
         }
+
+        .fd-user-wrap {
+  position: relative;
+}
+.fd-user-trigger {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fd-chevron {
+  transition: transform 0.2s ease;
+}
+.fd-chevron.open {
+  transform: rotate(180deg);
+}
+.fd-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  min-width: 180px;
+  padding: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  z-index: 20;
+}
+.fd-dropdown-item {
+  all: unset;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #0a0a0a;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.fd-dropdown-item:hover {
+  background: #f7f6f2;
+}
+.fd-dropdown-item.danger {
+  color: #b3261e;
+}
+.fd-dropdown-divider {
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  margin: 6px 4px;
+}
       `}</style>
 
       <div className="fd-topbar">

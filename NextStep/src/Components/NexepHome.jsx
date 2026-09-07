@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppContext } from "../Context/AppContext";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -66,12 +67,15 @@ const skills = [
   "UI/UX", "AWS", "DSA", "Figma", "MongoDB", "TypeScript",
 ];
 
+
+
 export default function NexepHome() {
   const [role, setRole] = useState("fresher");
   const [navOpen, setNavOpen] = useState(false);
   const navigate = useNavigate();
   const isFresher = role === "fresher";
   const steps = isFresher ? freshersSteps : recruiterSteps;
+  const {candidates,jobs} =useContext(AppContext);
 
   return (
     <div style={{ backgroundColor: PAPER, color: INK }} className="min-h-screen font-sans">
@@ -129,8 +133,8 @@ export default function NexepHome() {
 
           <div className="flex items-center gap-8 mt-12 pt-8" style={{ borderTop: `1px solid ${LINE}` }}>
             {[
-              ["4,200+", "fresher profiles"],
-              ["860+", "companies hiring"],
+              [`${candidates?.length ?? 0}`, "fresher profiles"],
+              [`${jobs?.length ?? 0}`, "companies hiring"],
               ["120+", "skills tracked"],
             ].map(([n, l]) => (
               <div key={l}>

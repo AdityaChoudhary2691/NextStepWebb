@@ -1,9 +1,9 @@
 package com.aditya.nexepbackend.Controller;
 
-
 import com.aditya.nexepbackend.Model.JobPosting;
 import com.aditya.nexepbackend.Service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +25,9 @@ public class JobController {
         return service.addJob(job, userId);
     }
 
-    @DeleteMapping("/{a}")
-    public String deleteJob(@PathVariable Integer a){
-        service.deleteJob(a);
-        return "deleted";
+    @DeleteMapping("/postjobs/{id}")
+    public ResponseEntity<String> deleteJob(@PathVariable Integer id) {
+        service.deleteJob(id);
+        return ResponseEntity.ok("deleted");
     }
 }
