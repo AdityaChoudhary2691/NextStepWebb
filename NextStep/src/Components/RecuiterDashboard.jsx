@@ -6,27 +6,9 @@ import { CircleUserRound, Link2, ChevronDown } from 'lucide-react';
 
 export default function RecruiterDashboard() {
   const { job, candidates, usub, setUsub, ubody, setBody } = useContext(AppContext);
-  const storedUser = JSON.parse(localStorage.getItem("nexepUser") || "{}");
-  const navigate = useNavigate();
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef(null);
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("nexepUser");
-    setMenuOpen(false);
-    navigate("/");
-  };
 
   return (
     <div className="rd-root">
@@ -264,47 +246,7 @@ export default function RecruiterDashboard() {
         }
       `}</style>
 
-      <div className="rd-topbar">
-        <Link to="/"><img src={logo} alt="" className='w-22 h-14 rounded m-2'/></Link>
-        <div className="fd-user-wrap" ref={menuRef}>
-          <button
-            type="button"
-            className="fd-user-trigger"
-            onClick={() => setMenuOpen((prev) => !prev)}
-          >
-            <CircleUserRound size={25} />
-            {storedUser.username || "Recruiter"}
-            <ChevronDown size={14} className={`fd-chevron ${menuOpen ? "open" : ""}`} />
-          </button>
-
-          {menuOpen && (
-            <div className="fd-dropdown">
-              <Link
-                to="/YourCard"
-                className="fd-dropdown-item"
-                onClick={() => setMenuOpen(false)}
-              >
-                My Posted
-              </Link>
-              <Link
-                to="/myapplications"
-                className="fd-dropdown-item"
-                onClick={() => setMenuOpen(false)}
-              >
-                My Applications
-              </Link>
-              <div className="fd-dropdown-divider" />
-              <button
-                type="button"
-                className="fd-dropdown-item danger"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+      
 
       <div className="rd-hero">
         <div className="rd-eyebrow">Recruiter Dashboard</div>

@@ -14,6 +14,7 @@ import RecuiterDashboard from './Components/RecuiterDashboard';
 import ProtectedRoute from './Components/ProtectedRoute';
 import PostedCard from './Components/PostedCard';
 import Navbar1 from './Components/Nav1';
+import RedirectIfAuthenticated from './Components/RedirectIfAuthenticated';
 
 const pageTransition = {
   initial: { opacity: 0, scale: 0.95 },
@@ -52,7 +53,16 @@ const App = () => {
           <Route path='/postjobs' element={<AnimatedPage><PostJob /></AnimatedPage>} />
           <Route path='/postskills' element={<AnimatedPage><ApplicationForm /></AnimatedPage>} />
           <Route path='/findskills' element={<AnimatedPage><CandidateCard /></AnimatedPage>} />
-          <Route path='/login' element={<AnimatedPage><LoginForm /></AnimatedPage>} />
+          <Route
+  path='/login'
+  element={
+    <AnimatedPage>
+      <RedirectIfAuthenticated>
+        <LoginForm />
+      </RedirectIfAuthenticated>
+    </AnimatedPage>
+  }
+/>
 
           <Route
             path='/fresherDashboard'
