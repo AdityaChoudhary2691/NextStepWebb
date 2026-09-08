@@ -38,7 +38,7 @@ function AnimatedPage({ children }) {
 
 const App = () => {
   const location = useLocation();
-  const hideNav = location.pathname === '/login' || location.pathname === '/fresherDashboard' || location.pathname === '/recruiterDashboard' || location.pathname === '/postskills' || location.pathname === '/findskills'  || location.pathname === '/postjobs' || location.pathname === '/findjobs' || location.pathname === '/PostedCards' || location.pathname === '/YourCard';
+  const hideNav = location.pathname === '/login' || location.pathname === '/fresherDashboard' || location.pathname === '/recruiterDashboard' || location.pathname === '/postskills' || location.pathname === '/findskills'  || location.pathname === '/postjobs' || location.pathname === '/findjobs' || location.pathname === '/PostedCard' || location.pathname === '/YourCard';
 
   return (
     <>
@@ -53,6 +53,7 @@ const App = () => {
           <Route path='/postjobs' element={<AnimatedPage><PostJob /></AnimatedPage>} />
           <Route path='/postskills' element={<AnimatedPage><ApplicationForm /></AnimatedPage>} />
           <Route path='/findskills' element={<AnimatedPage><CandidateCard /></AnimatedPage>} />
+          <Route path='*' element={<AnimatedPage><h1>Page not found</h1></AnimatedPage>} />
           <Route
   path='/login'
   element={

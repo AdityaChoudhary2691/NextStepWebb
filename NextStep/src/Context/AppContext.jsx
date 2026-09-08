@@ -30,8 +30,24 @@ const [description, setdescription] = useState("");
  const [resume, setResume] = useState("")
  const [vedio, setVedio] = useState("")
  const [apply,setApply]=useState("");
-  const [usub, setUsub] = useState("")
-  const [ubody, setBody] = useState("")
+  // remove these lines:
+// const [usub, setUsub] = useState("")
+// const [ubody, setBody] = useState("")
+
+// add instead:
+const [templates, setTemplates] = useState(() => {
+  try {
+    const stored = localStorage.getItem("nexepTemplates");
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+});
+const [selectedTemplateId, setSelectedTemplateId] = useState(null);
+
+useEffect(() => {
+  localStorage.setItem("nexepTemplates", JSON.stringify(templates));
+}, [templates]);
   const [passoutYear, setPassoutYear] = useState("");
 
 useEffect(() => {
@@ -45,7 +61,7 @@ useEffect(() => {
  },[])
 
   return (
-    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,usub,setBody,ubody,setUsub,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates}}>
+    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates,templates,setTemplates,selectedTemplateId,setSelectedTemplateId}}>
       {children}
     </AppContext.Provider>
   );

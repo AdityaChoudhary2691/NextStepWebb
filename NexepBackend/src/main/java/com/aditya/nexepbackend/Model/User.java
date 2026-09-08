@@ -3,13 +3,13 @@ package com.aditya.nexepbackend.Model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Getter
 @Entity
 @Table(name = "users")
 public class User {
 
-    // getters and setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,13 +18,14 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @JsonIgnore
     @Setter
     @Column(nullable = false)
     private String password; // stored as bcrypt hash
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role; // FRESHER or RECRUITER
+    private Role role;
 
     public User() {}
 
@@ -33,6 +34,4 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
-
 }

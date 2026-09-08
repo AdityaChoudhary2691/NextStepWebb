@@ -114,31 +114,34 @@ export default function Navbar1({ defaultName = "User" }) {
           </button>
 
           {menuOpen && (
-            <div className="fd-dropdown">
-              <Link
-                to="/YourCard"
-                className="fd-dropdown-item"
-                onClick={() => setMenuOpen(false)}
-              >
-                My Posted
-              </Link>
-              <Link
-                to="/myapplications"
-                className="fd-dropdown-item"
-                onClick={() => setMenuOpen(false)}
-              >
-                My Applications
-              </Link>
-              <div className="fd-dropdown-divider" />
-              <button
-                type="button"
-                className="fd-dropdown-item danger"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
-          )}
+  <div className="fd-dropdown">
+    {storedUser.role === "RECRUITER" ? (
+      <Link
+        to="/PostedCard"
+        className="fd-dropdown-item"
+        onClick={() => setMenuOpen(false)}
+      >
+        My Posted Jobs
+      </Link>
+    ) : (
+      <Link
+        to="/YourCard"
+        className="fd-dropdown-item"
+        onClick={() => setMenuOpen(false)}
+      >
+        My Applications
+      </Link>
+    )}
+    <div className="fd-dropdown-divider" />
+    <button
+      type="button"
+      className="fd-dropdown-item danger"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
+  </div>
+)}
         </div>
       </div>
     </>
