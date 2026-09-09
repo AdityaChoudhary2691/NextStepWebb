@@ -66,8 +66,7 @@ export default function PostJob() {
       setName("");
       setremuneration("");
       setdescription("");
-      setUsub("");
-      setBody("");
+     
 
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2500);
