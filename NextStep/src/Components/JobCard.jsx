@@ -84,7 +84,7 @@ const JobCard = () => {
           {formatPostedDate(item.postedDate)}
         </span>
         <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors">
-          View details
+          APPLY
         </button>
     
       </div>
