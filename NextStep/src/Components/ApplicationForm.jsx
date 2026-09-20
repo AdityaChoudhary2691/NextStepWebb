@@ -281,7 +281,7 @@ export default function ApplicationForm() {
                   type="text"
                   value={uname}
                   onChange={handleUsername}
-                  placeholder="Aditya Sharma"
+                  placeholder="Name"
 
                 />
               </Field>
@@ -296,7 +296,7 @@ export default function ApplicationForm() {
                   type="tel"
                   value={mobile}
                   onChange={handleMobile}
-                  placeholder="9876543210"
+                  placeholder="xxxxxxxxxx"
 
                 />
               </Field>
