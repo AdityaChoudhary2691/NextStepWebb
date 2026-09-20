@@ -19,6 +19,8 @@ import Navbar1 from "./Nav1";
 
 const ACCENT = "#E8A33D";
 const INK = "#000000";
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default function ApplicationForm() {
 
@@ -147,7 +149,8 @@ export default function ApplicationForm() {
     if (video) formData.append("video", video);
 
     axios
-      .post("http://localhost:8081/postskills/upload", formData)
+      axios
+  .post(`${API_URL}/postskills/upload`, formData)
       .then((res) => {
         setCandidates([...candidates, res.data]);
 

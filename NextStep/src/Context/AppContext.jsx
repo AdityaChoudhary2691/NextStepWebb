@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { createContext , useState , useRef, useEffect} from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const AppContext = createContext();
 
 const colors = [
@@ -51,12 +53,12 @@ useEffect(() => {
   const [passoutYear, setPassoutYear] = useState("");
 
 useEffect(() => {
-    axios.get("http://localhost:8081/getjobs")
+    axios.get(`${API_URL}/getjobs`)
       .then(res => setJob(res.data));
   }, []);
 
  useEffect(()=>{
-  axios.get("http://localhost:8081/getskills")
+  axios.get(`${API_URL}/getskills`)
   .then(res=>setCandidates(res.data));
  },[])
 

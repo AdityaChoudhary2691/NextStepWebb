@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 
-
+const API_URL = import.meta.env.VITE_API_URL;
 const COPY = {
   fresher: {
     letter: "F",
@@ -39,7 +39,7 @@ export default function LoginForm() {
   const endpoint = isSignup ? "/api/auth/signup" : "/api/auth/login";
 
   try {
-    const res = await fetch(`http://localhost:8081${endpoint}`, {
+    const res = await fetch(`${API_URL}${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

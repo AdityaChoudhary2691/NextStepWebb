@@ -4,6 +4,7 @@ import { User, Phone, GraduationCap, Briefcase, FileText, Video, Check, Send } f
 
 const ACCENT = "#E8A33D";
 const INK = "#000000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function CandidateCard() {
   const { candidates } = useContext(AppContext);
@@ -28,7 +29,7 @@ export default function CandidateCard() {
     setSendingMap((prev) => ({ ...prev, [key]: true }));
 
     try {
-      const res = await fetch("http://localhost:8081/sended", {
+     const res = await fetch(`${API_URL}/sended`,  {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -220,7 +221,7 @@ function AttachmentRow({ icon, label, file }) {
 
 function ResumeRow({ candidate }) {
   const hasResume = !!candidate.resumeName;
-  const url = `http://localhost:8081/skills/${candidate.id}/resume`;
+  const url = `${API_URL}/skills/${candidate.id}/resume`;
 
   return (
     <div className="flex items-center justify-between">
@@ -249,7 +250,7 @@ function ResumeRow({ candidate }) {
 function VideoRow({ candidate }) {
   const [showVideo, setShowVideo] = useState(false);
   const hasVideo = !!candidate.videoName;
-  const url = `http://localhost:8081/skills/${candidate.id}/video`;
+  const url = `${API_URL}/skills/${candidate.id}/video`;
 
   return (
     <div>

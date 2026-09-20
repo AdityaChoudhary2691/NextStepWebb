@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../Context/AppContext';
 import logo from "../assets/logo.jpeg"
-import Navbar1 from './Nav1';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 const JobCard = () => {
@@ -20,9 +21,9 @@ const JobCard = () => {
 
   const deleteJob = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8081/postjobs/${id}`, {
-        method: 'DELETE'
-      });
+      const res = await fetch(`${API_URL}/postjobs/${id}`, {
+  method: 'DELETE'
+});
       const data = await res.text(); // your endpoint returns "deleted" as plain text
       console.log(data);
 

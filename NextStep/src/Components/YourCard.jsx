@@ -5,6 +5,7 @@ import { User, Phone, GraduationCap, Briefcase, FileText, Video, Check, Send } f
 
 const ACCENT = "#E8A33D";
 const INK = "#000000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function YourCard() {
   const { candidates, setCandidates } = useContext(AppContext);
@@ -14,9 +15,9 @@ export default function YourCard() {
 
   const deleteSkill = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8081/skills/${id}`, {
-        method: 'DELETE'
-      });
+      const res = await fetch(`${API_URL}/skills/${id}`, {
+  method: 'DELETE'
+});
       const data = await res.text();
       console.log("Delete response:", data);
 
@@ -170,7 +171,7 @@ function Row({ icon, label, value }) {
 
 function ResumeRow({ candidate }) {
   const hasResume = !!candidate.resumeName;
-  const url = `http://localhost:8081/skills/${candidate.id}/resume`;
+  const url = `${API_URL}/skills/${candidate.id}/resume`;
 
   return (
     <div className="flex items-center justify-between">
@@ -199,7 +200,7 @@ function ResumeRow({ candidate }) {
 function VideoRow({ candidate }) {
   const [showVideo, setShowVideo] = useState(false);
   const hasVideo = !!candidate.videoName;
-  const url = `http://localhost:8081/skills/${candidate.id}/video`;
+  const url = `${API_URL}/skills/${candidate.id}/video`;
 
   return (
     <div>

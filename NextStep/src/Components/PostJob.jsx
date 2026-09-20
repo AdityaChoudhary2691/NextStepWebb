@@ -5,6 +5,7 @@ import axios from "axios";
 
 const ACCENT = "#E8A33D";
 const INK = "#000000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function PostJob() {
   const {
@@ -55,10 +56,10 @@ export default function PostJob() {
 };
 
     try {
-      const res = await axios.post(
-        `http://localhost:8081/postjobs/${userId}`,
-        newJobs
-      );
+     const res = await axios.post(
+  `${API_URL}/postjobs/${userId}`,
+  newJobs
+);
       setJob([...job, res.data]);
 
       setJobType("");
