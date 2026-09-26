@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Briefcase, GraduationCap, Building2, FileText, Send, CheckCircle2 } from "lucide-react";
+import { Briefcase, GraduationCap, Building2, FileText, Send, CheckCircle2, ListChecks, Clock } from "lucide-react";
 import { AppContext } from "../Context/AppContext";
 import axios from "axios";
 
@@ -16,6 +16,10 @@ export default function PostJob() {
     description, setdescription,
     usub, setUsub,
     ubody, setBody,
+    // NEW
+    skillsRequired, setSkillsRequired,
+    companyBrief, setCompanyBrief,
+    duration, setDuration,
   } = useContext(AppContext);
 
   const [jobType, setJobType] = useState("");
@@ -37,6 +41,11 @@ export default function PostJob() {
   const handleremuneration = (event) => setremuneration(event.target.value);
   const handledescription = (event) => setdescription(event.target.value);
 
+  // NEW handlers
+  const handleSkillsRequired = (event) => setSkillsRequired(event.target.value);
+  const handleCompanyBrief = (event) => setCompanyBrief(event.target.value);
+  const handleDuration = (event) => setDuration(event.target.value);
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -48,12 +57,19 @@ export default function PostJob() {
     const { id: userId } = JSON.parse(storedUser);
 
     const newJobs = {
-  type: jobType,
-  position,
-  name,
-  remuneration: Number(remuneration),
-  description,
-};
+      type: jobType,
+      position,
+      name,
+      remuneration: Number(remuneration),
+      description,
+      companyBrief,
+      skillsRequired: skillsRequired
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean),
+      // duration only makes sense for internships
+      ...(jobType === "Internship" ? { durationMonths: Number(duration) } : {}),
+    };
 
     try {
      const res = await axios.post(
@@ -67,7 +83,11 @@ export default function PostJob() {
       setName("");
       setremuneration("");
       setdescription("");
-     
+      // NEW: reset the new fields too
+      setSkillsRequired("");
+      setCompanyBrief("");
+      setDuration("");
+
 
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2500);
@@ -245,6 +265,66 @@ export default function PostJob() {
               />
             </div>
           </div>
+
+          {/* NEW: Company Brief */}
+          <div>
+            <label htmlFor="companyBrief" className="block text-sm font-medium text-[#1c1c1a] mb-2">
+              Company Brief
+            </label>
+            <div className="relative">
+              <Building2 className="absolute left-3.5 top-3.5 w-4 h-4 text-[#1c1c1a]/35" />
+              <textarea
+                id="companyBrief"
+                name="companyBrief"
+                rows={3}
+                value={companyBrief}
+                onChange={handleCompanyBrief}
+                placeholder="A short intro to the company for candidates..."
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none resize-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10"
+              />
+            </div>
+          </div>
+
+          {/* NEW: Skills Required */}
+          <div>
+            <label htmlFor="skillsRequired" className="block text-sm font-medium text-[#1c1c1a] mb-2">
+              Prior Skills Required
+            </label>
+            <div className="relative">
+              <ListChecks className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1c1c1a]/35" />
+              <input
+                id="skillsRequired"
+                name="skillsRequired"
+                type="text"
+                value={skillsRequired}
+                onChange={handleSkillsRequired}
+                placeholder="e.g. React, Tailwind CSS, Git (comma separated)"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10"
+              />
+            </div>
+          </div>
+
+          {/* NEW: Duration — only relevant for internships */}
+          {jobType === "Internship" && (
+            <div>
+              <label htmlFor="duration" className="block text-sm font-medium text-[#1c1c1a] mb-2">
+                Internship Duration (months)
+              </label>
+              <div className="relative">
+                <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1c1c1a]/35" />
+                <input
+                  id="duration"
+                  name="duration"
+                  type="number"
+                  min="1"
+                  value={duration}
+                  onChange={handleDuration}
+                  placeholder="e.g. 6"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#f7f6f2] border text-sm text-[#1c1c1a] placeholder:text-[#1c1c1a]/35 outline-none transition-all duration-200 focus:bg-white focus:ring-2 focus:ring-[#1c1c1a]/10"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Description */}
           <div>

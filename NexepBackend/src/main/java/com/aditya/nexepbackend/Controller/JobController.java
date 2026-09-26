@@ -30,4 +30,4 @@ public class JobController {
         service.deleteJob(id);
         return ResponseEntity.ok("deleted");
     }
-}
+} 

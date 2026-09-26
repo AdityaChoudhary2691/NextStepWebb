@@ -18,11 +18,18 @@ const years = Array.from({ length: 7 }, (_, i) => 2024 + i);
 
 export const AppProvider = ({ children }) => {
   const [job, setJob] = useState([]);
- 
+
   const[position,setPosition]=useState("");
   const[name,setName]=useState("");
   const [remuneration, setremuneration] = useState("");
-const [description, setdescription] = useState("");
+  const [description, setdescription] = useState("");
+
+  // NEW: extra fields needed by the JobDetails page
+  // (internship duration, prior skills required, company brief)
+  const [skillsRequired, setSkillsRequired] = useState("");
+  const [companyBrief, setCompanyBrief] = useState("");
+  const [duration, setDuration] = useState("");
+
   const [candidates, setCandidates] = useState([]);
  const [skill, setSkills] = useState([]);
  const [uname, setUName] = useState("");
@@ -63,7 +70,13 @@ useEffect(() => {
  },[])
 
   return (
-    <AppContext.Provider value={{ job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription, colors ,candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates,templates,setTemplates,selectedTemplateId,setSelectedTemplateId}}>
+    <AppContext.Provider value={{
+      job,setJob,position,setPosition,name,setName,remuneration,setremuneration,description,setdescription, colors ,
+      candidates,skill,uname,mobile,resume,skill,email,status,vedio,apply,setSkills,setUName,setMobile,setEmail,
+      setStatus,setResume,setVedio,setApply,years,passoutYear,setPassoutYear,candidates,setCandidates,templates,
+      setTemplates,selectedTemplateId,setSelectedTemplateId,
+      skillsRequired,setSkillsRequired,companyBrief,setCompanyBrief,duration,setDuration
+    }}>
       {children}
     </AppContext.Provider>
   );

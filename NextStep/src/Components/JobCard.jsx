@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../Context/AppContext';
 import logo from "../assets/logo.jpeg"
+import { Link } from 'react-router';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -83,9 +84,10 @@ const JobCard = () => {
         <span className="text-xs text-slate-400">
           {formatPostedDate(item.postedDate)}
         </span>
-        <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors">
-          APPLY
-        </button>
+        
+        <Link to={`/details/${item.id}`} className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors">
+          VIEW DETAILS
+        </Link>
     
       </div>
     </div>

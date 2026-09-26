@@ -13,6 +13,7 @@ import FresherDashboard from './Components/FresherDashboard';
 import RecuiterDashboard from './Components/RecuiterDashboard';
 import ProtectedRoute from './Components/ProtectedRoute';
 import PostedCard from './Components/PostedCard';
+import JobDetailsPage from './Components/JobDetailsPage';
 import Navbar1 from './Components/Nav1';
 import RedirectIfAuthenticated from './Components/RedirectIfAuthenticated';
 
@@ -64,6 +65,8 @@ const App = () => {
     </AnimatedPage>
   }
 />
+
+<Route path='/details/:id' element={<AnimatedPage><JobDetailsPage/></AnimatedPage>}></Route>
 
           <Route
             path='/fresherDashboard'
