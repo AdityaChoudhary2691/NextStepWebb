@@ -16,6 +16,7 @@ import PostedCard from './Components/PostedCard';
 import JobDetailsPage from './Components/JobDetailsPage';
 import Navbar1 from './Components/Nav1';
 import RedirectIfAuthenticated from './Components/RedirectIfAuthenticated';
+import MyAnalytics from './Components/MyAnalytics';
 
 const pageTransition = {
   initial: { opacity: 0, scale: 0.95 },
@@ -39,7 +40,7 @@ function AnimatedPage({ children }) {
 
 const App = () => {
   const location = useLocation();
-  const hideNav = location.pathname === '/login' || location.pathname === '/fresherDashboard' || location.pathname === '/recruiterDashboard' || location.pathname === '/postskills' || location.pathname === '/findskills'  || location.pathname === '/postjobs' || location.pathname === '/findjobs' || location.pathname === '/PostedCard' || location.pathname === '/YourCard';
+  const hideNav = location.pathname === '/login' || location.pathname === '/fresherDashboard' || location.pathname === '/recruiterDashboard' || location.pathname === '/postskills' || location.pathname === '/findskills'  || location.pathname === '/postjobs' || location.pathname === '/findjobs' || location.pathname === '/PostedCard' || location.pathname === '/YourCard' || location.pathname === '/myanalytics' || location.pathname === '/details';
 
   return (
     <>
@@ -54,6 +55,7 @@ const App = () => {
           <Route path='/postjobs' element={<AnimatedPage><PostJob /></AnimatedPage>} />
           <Route path='/postskills' element={<AnimatedPage><ApplicationForm /></AnimatedPage>} />
           <Route path='/findskills' element={<AnimatedPage><CandidateCard /></AnimatedPage>} />
+          <Route path='/myanalytics' element={<AnimatedPage><MyAnalytics></MyAnalytics></AnimatedPage>} />
           <Route path='*' element={<AnimatedPage><h1>Page not found</h1></AnimatedPage>} />
           <Route
   path='/login'

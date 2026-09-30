@@ -39,6 +39,7 @@ export const AppProvider = ({ children }) => {
  const [resume, setResume] = useState("")
  const [vedio, setVedio] = useState("")
  const [apply,setApply]=useState("");
+ const [jobviews, setjobviews]=useState();
   // remove these lines:
 // const [usub, setUsub] = useState("")
 // const [ubody, setBody] = useState("")

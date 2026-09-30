@@ -29,10 +29,8 @@ public class SkillPosting {
     @CollectionTable(name = "skill_posting_skills", joinColumns = @JoinColumn(name = "skill_posting_id"))
     @Column(name = "skill")
     private String[] uskills;
-
     private String videoName;
     private String videoType;
-
     private String resumeName;
     private String resumeType;
     @JdbcTypeCode(SqlTypes.VARBINARY)

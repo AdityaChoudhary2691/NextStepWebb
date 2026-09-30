@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AppContext } from '../Context/AppContext';
 import logo from "../assets/logo.jpeg"
 import { Link } from 'react-router';
+import { TrackView } from './TrackView';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -85,9 +86,13 @@ const JobCard = () => {
           {formatPostedDate(item.postedDate)}
         </span>
         
-        <Link to={`/details/${item.id}`} className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors">
-          VIEW DETAILS
-        </Link>
+       <Link
+  to={`/details/${item.id}`}
+  onClick={() => TrackView(item.id)}
+  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition-colors"
+>
+  VIEW DETAILS
+</Link>
     
       </div>
     </div>

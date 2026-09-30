@@ -100,7 +100,7 @@ export default function Navbar1({ defaultName = "User" }) {
       `}</style>
 
       <div className="fd-topbar">
-        <Link to="/"><img src={logo} alt="" className='w-22 h-14 rounded'/></Link>
+        <Link to="/"><img src={logo} alt="" className='w-22 h-14 rounded' /></Link>
 
         <div className="fd-user-wrap" ref={menuRef}>
           <button
@@ -114,34 +114,52 @@ export default function Navbar1({ defaultName = "User" }) {
           </button>
 
           {menuOpen && (
-  <div className="fd-dropdown">
-    {storedUser.role === "RECRUITER" ? (
-      <Link
-        to="/PostedCard"
-        className="fd-dropdown-item"
-        onClick={() => setMenuOpen(false)}
-      >
-        My Posted Jobs
-      </Link>
-    ) : (
-      <Link
-        to="/YourCard"
-        className="fd-dropdown-item"
-        onClick={() => setMenuOpen(false)}
-      >
-        My Applications
-      </Link>
-    )}
-    <div className="fd-dropdown-divider" />
-    <button
-      type="button"
-      className="fd-dropdown-item danger"
-      onClick={handleLogout}
-    >
-      Logout
-    </button>
-  </div>
-)}
+            <div className="fd-dropdown">
+              {storedUser.role === "RECRUITER" ? (
+                <>
+                  <Link
+                    to="/PostedCard"
+                    className="fd-dropdown-item"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    My Posted Jobs
+                  </Link>
+                  <Link
+                    to="/myanalytics"
+                    className="fd-dropdown-item"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    My Analytics
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/YourCard"
+                    className="fd-dropdown-item"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    My Applications
+                  </Link>
+                  <Link
+                    to="/myanalytics"
+                    className="fd-dropdown-item"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    My Analytics
+                  </Link>
+                </>
+              )}
+              <div className="fd-dropdown-divider" />
+              <button
+                type="button"
+                className="fd-dropdown-item danger"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
