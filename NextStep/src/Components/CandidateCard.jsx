@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../Context/AppContext";
+import { trackSkillView } from "../Components/trackSkillView";
 import { User, Phone, GraduationCap, Briefcase, FileText, Video, Check, Send } from "lucide-react";
 
 const ACCENT = "#E8A33D";
@@ -233,6 +234,7 @@ function ResumeRow({ candidate }) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackSkillView(candidate.id)}
           className="font-medium text-right truncate max-w-[160px] hover:underline"
           style={{ color: "#E8A33D" }}
         >
@@ -261,7 +263,10 @@ function VideoRow({ candidate }) {
         {hasVideo ? (
           <button
             type="button"
-            onClick={() => setShowVideo((s) => !s)}
+            onClick={() => {
+    if (!showVideo) trackSkillView(candidate.id); 
+    setShowVideo((s) => !s);
+  }}
             className="font-medium hover:underline"
             style={{ color: "#E8A33D" }}
           >

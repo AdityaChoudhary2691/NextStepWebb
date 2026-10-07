@@ -1,16 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 
-/* ---------- Config ---------- */
+
 const API_BASE = import.meta.env.VITE_API_URL;
 const USE_MOCK = false;
 
-/*
-  Endpoints this page expects (Spring Boot):
-    GET {API_BASE}/analytics/recruiter/{userId}?range=30d
-    GET {API_BASE}/analytics/candidate/{userId}?range=30d
-  Response shapes match MOCK below.
-*/
 const MOCK = {
   RECRUITER: {
     jobs: { total: 24, active: 15, expired: 9 },
@@ -41,7 +35,6 @@ const MOCK = {
   },
 };
 
-/* ---------- Helpers ---------- */
 const pct = (a, b) => (b ? ((a / b) * 100).toFixed(1) : "0.0");
 const RANGES = ["7d", "30d", "90d"];
 const ring = "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1D6F80]";
@@ -78,7 +71,6 @@ function useAnalytics(user, range) {
   return { ...state, kind };
 }
 
-/* ---------- Shared building blocks ---------- */
 function Panel({ title, note, children, className = "" }) {
   return (
     <section className={`rounded-xl border border-slate-200 bg-white p-5 ${className}`}>
@@ -184,7 +176,7 @@ const Badge = ({ children }) => (
   <span className={`rounded-full px-2 py-0.5 text-xs ${STATUS_STYLE[children] || STATUS_STYLE.Applied}`}>{children}</span>
 );
 
-/* ---------- Recruiter view ---------- */
+
 function RecruiterView({ d, range }) {
   const [tab, setTab] = useState("skills");
   const [sortBy, setSortBy] = useState("views");
@@ -283,63 +275,117 @@ function RecruiterView({ d, range }) {
   );
 }
 
-/* ---------- Candidate view ---------- */
-function CandidateView({ d }) {
-  const c = d.counts;
+
+function CandidateView({ d, range }) {
+  const p = d.profile;
+  const v = d.views;
+  const c = d.counts;        // not sent yet: shows once an application entity exists
+  const r = d.responseHours; // not sent yet
+  const days = range.replace("d", " days");
+
   return (
     <>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <Stat label="Applications sent" value={c.applied} />
-        <Stat label="Shortlisted" value={c.shortlisted} sub={`${pct(c.shortlisted, c.applied)}% of applications`} />
-        <Stat label="Interviews" value={c.interviews} />
-        <Stat label="Profile views" value={d.profileViews} sub="By recruiters" />
+        {v && <Stat label="Profile views" value={v.total.toLocaleString()} sub={`From ${v.uniqueRecruiters} recruiters, last ${days}`} />}
+        {p && <Stat label="Profile strength" value={`${p.strength}%`} />}
+        {p && <Stat label="Skills listed" value={p.skills} />}
+        {d.market && <Stat label="Open jobs" value={d.market.openJobs} />}
+        {c && <Stat label="Applications sent" value={c.applied} />}
+        {c && <Stat label="Shortlisted" value={c.shortlisted} sub={`${pct(c.shortlisted, c.applied)}% of applications`} />}
+        {c && <Stat label="Interviews" value={c.interviews} />}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-5">
-        <Panel title="Your application progress" note="How far your applications have moved" className="lg:col-span-3">
-          <Funnel stages={[
-            { label: "Applied", value: c.applied },
-            { label: "Shortlisted", value: c.shortlisted },
-            { label: "Interviews", value: c.interviews },
-            { label: "Offers", value: c.offers },
-          ]} />
+      {p && !p.exists && (
+        <Panel title="Your profile isn't posted yet">
+          <p className="text-sm text-slate-600">Post your profile so recruiters can find you. Views will appear here.</p>
         </Panel>
-        <Panel title="Recruiter response time" note="Average hours recruiters take to reply to you" className="lg:col-span-2">
-          <Sparkline points={d.responseHours.trend} label="Recruiter response time by week" />
-          <p className="mt-3 text-sm text-slate-600">Recruiters currently reply in about {d.responseHours.average}h on average.</p>
-        </Panel>
-      </div>
+      )}
 
-      <Panel title="Skills in the jobs you applied to" note="Skills asked for most often across your applications">
-        <BarList rows={d.skillsInDemand} />
-      </Panel>
-
-      <Panel title="Your applications" note="Latest status for each job">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[520px] text-left text-sm">
-            <thead className="text-slate-500">
-              <tr className="border-b border-slate-200">
-                <th className="py-2 pr-4 font-medium">Job</th>
-                <th className="py-2 pr-4 font-medium">Company</th>
-                <th className="py-2 pr-4 font-medium">Status</th>
-                <th className="py-2 text-right font-medium">Applied on</th>
-              </tr>
-            </thead>
-            <tbody>
-              {d.applications.map((a) => (
-                <tr key={a.job + a.appliedOn} className="border-b border-slate-100 last:border-0">
-                  <td className="py-3 pr-4 font-medium">{a.job}</td>
-                  <td className="py-3 pr-4 text-slate-600">{a.company}</td>
-                  <td className="py-3 pr-4"><Badge>{a.status}</Badge></td>
-                  <td className="py-3 text-right tabular-nums text-slate-600">
-                    {new Date(a.appliedOn).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {(v || p) && (
+        <div className="grid gap-6 lg:grid-cols-5">
+          {v && (
+            <Panel title="Recruiter views" note="Profile opens per day" className="lg:col-span-3">
+              {v.total > 0 ? (
+                <Sparkline points={v.daily.map((x) => x.count)} label="Recruiter profile views per day" />
+              ) : (
+                <p className="text-sm text-slate-500">No views in the last {days}. A video introduction and resume help recruiters notice you.</p>
+              )}
+            </Panel>
+          )}
+          {p && (
+            <Panel title="Profile strength" note="Complete these to stand out" className="lg:col-span-2">
+              <div className="mb-4 h-2 rounded-full bg-slate-100">
+                <div className="h-2 rounded-full bg-[#1D6F80]" style={{ width: `${p.strength}%` }} />
+              </div>
+              <ul className="space-y-2 text-sm">
+                {p.checklist.map((i) => (
+                  <li key={i.label} className="flex items-center gap-2">
+                    <span aria-hidden className={`grid h-4 w-4 place-items-center rounded-full text-[10px] text-white ${i.done ? "bg-[#1D6F80]" : "bg-slate-300"}`}>
+                      {i.done ? "✓" : ""}
+                    </span>
+                    <span className={i.done ? "text-slate-500" : "font-medium text-slate-900"}>{i.label}</span>
+                    <span className="sr-only">{i.done ? "(done)" : "(to do)"}</span>
+                  </li>
+                ))}
+              </ul>
+            </Panel>
+          )}
         </div>
-      </Panel>
+      )}
+
+      {c && (
+        <div className="grid gap-6 lg:grid-cols-5">
+          <Panel title="Your application progress" note="How far your applications have moved" className="lg:col-span-3">
+            <Funnel stages={[
+              { label: "Applied", value: c.applied },
+              { label: "Shortlisted", value: c.shortlisted },
+              { label: "Interviews", value: c.interviews },
+              { label: "Offers", value: c.offers },
+            ]} />
+          </Panel>
+          {r && (
+            <Panel title="Recruiter response time" note="Average hours recruiters take to reply to you" className="lg:col-span-2">
+              <Sparkline points={r.trend} label="Recruiter response time by week" />
+              <p className="mt-3 text-sm text-slate-600">Recruiters currently reply in about {r.average}h on average.</p>
+            </Panel>
+          )}
+        </div>
+      )}
+
+      {d.skillsInDemand && (
+        <Panel title="Skills in the jobs you applied to" note="Skills asked for most often across your applications">
+          <BarList rows={d.skillsInDemand} />
+        </Panel>
+      )}
+
+      {d.applications && (
+        <Panel title="Your applications" note="Latest status for each job">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[520px] text-left text-sm">
+              <thead className="text-slate-500">
+                <tr className="border-b border-slate-200">
+                  <th className="py-2 pr-4 font-medium">Job</th>
+                  <th className="py-2 pr-4 font-medium">Company</th>
+                  <th className="py-2 pr-4 font-medium">Status</th>
+                  <th className="py-2 text-right font-medium">Applied on</th>
+                </tr>
+              </thead>
+              <tbody>
+                {d.applications.map((a) => (
+                  <tr key={a.job + a.appliedOn} className="border-b border-slate-100 last:border-0">
+                    <td className="py-3 pr-4 font-medium">{a.job}</td>
+                    <td className="py-3 pr-4 text-slate-600">{a.company}</td>
+                    <td className="py-3 pr-4"><Badge>{a.status}</Badge></td>
+                    <td className="py-3 text-right tabular-nums text-slate-600">
+                      {new Date(a.appliedOn).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Panel>
+      )}
     </>
   );
 }
@@ -391,7 +437,7 @@ export default function MyAnalytics() {
             </Panel>
           )}
 
-          {loggedIn && data && (kind === "RECRUITER" ? <RecruiterView d={data} range={range} /> : <CandidateView d={data} />)}
+          {loggedIn && data && (kind === "RECRUITER" ? <RecruiterView d={data} range={range} /> : <CandidateView d={data} range={range} />)}
         </div>
       </main>
     </>
